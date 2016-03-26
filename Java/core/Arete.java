@@ -37,6 +37,7 @@ public class Arete {
 	/** Le constructeur 2 !!! A COMPLETER après avoir regardé un peu mieux les "DataInputStream"
 	 * 
 	 */
+	
 	public Arete(Noeud a, Noeud b, char type, boolean sensUnique, int vitMax, String nom){
 		this.depart = a;
 		this.arrivee = b;
