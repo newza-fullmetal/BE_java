@@ -2,7 +2,6 @@ package core;
 
 import java.io.DataInputStream;
 import base.Descripteur;
-import base.Noeud;
 
 public class Arete {
 	
