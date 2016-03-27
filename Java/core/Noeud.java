@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Noeud {
 	
-	protected static int cpt_id = 0;
+
 	/** Un identifiant pour définir le noeud */
 	private int id;
 	
@@ -18,12 +18,12 @@ public class Noeud {
 	/*
 	 * Le constructeur
 	 */
-	public Noeud(float lat, float lon){
+	public Noeud(int id, float lat, float lon){
 		this.lat = lat;
 		this.lon = lon;
 		this.suiv = new ArrayList<Noeud>();
-		this.id = cpt_id;
-		cpt_id++;
+		this.id = id;
+		
 	}
 	
 	public void addSuiv(Noeud n){
@@ -31,6 +31,12 @@ public class Noeud {
 	}
 	
 	
+	
+	@Override
+	public String toString() {
+		return "Noeud [id=" + id + ", lat=" + lat + ", lon=" + lon + ", suiv=" + suiv + "]";
+	}
+
 	/**
 	 * Les getters et setters !
 	 */

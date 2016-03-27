@@ -4,9 +4,14 @@ package core ;
  *   Classe representant un graphe.
  *   A vous de completer selon vos choix de conception.
  */
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
-import java.io.* ;
-import base.* ;
+import base.Couleur;
+import base.Descripteur;
+import base.Dessin;
+import base.Utils;
 
 public class Graphe {
 
@@ -34,10 +39,19 @@ public class Graphe {
      * Ces attributs constituent une structure ad-hoc pour stocker les informations du graphe.
      * Vous devez modifier et ameliorer ce choix de conception simpliste.
      */
-    private float[] longitudes ;
-    private float[] latitudes ;
+    /*private float[] longitudes ;
+    private float[] latitudes ;*/
+    
+    private ArrayList<Arete> routes;
     private Descripteur[] descripteurs ;
-
+    
+    /** Le nombre total de noeuds du graphe */
+    private int nbNoeuds;
+    
+    /** L'ensemble des noeuds du graphe */
+    private ArrayList<Noeud> noeuds;
+    //private Noeud[] lesNoeuds;
+    
     
     // Deux malheureux getters.
     public Dessin getDessin() { return dessin ; }
@@ -49,7 +63,8 @@ public class Graphe {
 	this.nomCarte = nomCarte ;
 	this.dessin = dessin ;
 	Utils.calibrer(nomCarte, dessin) ;
-	
+	this.routes = new ArrayList<Arete>();
+	this.noeuds = new ArrayList<Noeud>();
 	// Lecture du fichier MAP. 
 	// Voir le fichier "FORMAT" pour le detail du format binaire.
 	try {
@@ -69,21 +84,30 @@ public class Graphe {
 	    // Lecture du nombre de descripteurs, nombre de noeuds.
 	    int nb_descripteurs = dis.readInt () ;
 	    int nb_nodes = dis.readInt () ;
-
+	    this.nbNoeuds = nb_nodes;
 	    // Nombre de successeurs enregistrÃ©s dans le fichier.
 	    int[] nsuccesseurs_a_lire = new int[nb_nodes] ;
 	    
 	    // En fonction de vos choix de conception, vous devrez certainement adapter la suite.
-	    this.longitudes = new float[nb_nodes] ;
-	    this.latitudes = new float[nb_nodes] ;
+	    /*this.longitudes = new float[nb_nodes] ;
+	    this.latitudes = new float[nb_nodes] ;*/
 	    this.descripteurs = new Descripteur[nb_descripteurs] ;
-
+		
+	    
+	    float longitude, latitude;
+	    int nbSuccesseurs;
 	    // Lecture des noeuds
 	    for (int num_node = 0 ; num_node < nb_nodes ; num_node++) {
 		// Lecture du noeud numero num_node
-		longitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
+		/*longitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
 		latitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
-		nsuccesseurs_a_lire[num_node] = dis.readUnsignedByte() ;
+		*/
+		longitude = ((float)dis.readInt ()) / 1E6f ;
+		latitude = ((float)dis.readInt ()) / 1E6f ;
+		
+		nbSuccesseurs = dis.readUnsignedByte() ;
+		this.noeuds.add(new Noeud(num_node, latitude, longitude));
+		nsuccesseurs_a_lire[num_node] = nbSuccesseurs;
 	    }
 	    
 	    Utils.checkByte(255, dis) ;
