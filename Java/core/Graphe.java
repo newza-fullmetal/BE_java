@@ -69,7 +69,7 @@ public class Graphe {
 	// Voir le fichier "FORMAT" pour le detail du format binaire.
 	try {
 
-	    // Nombre d'aretes
+	    // Nombre d'aretes du graphe
 	    int edges = 0 ;
 
 	    // Verification du magic number et de la version du format du fichier .map
@@ -94,7 +94,8 @@ public class Graphe {
 	    this.descripteurs = new Descripteur[nb_descripteurs] ;
 		
 	    
-	    float longitude, latitude;
+	    float longitude = 0.0f;
+	    float latitude = 0.0f;
 	    int nbSuccesseurs;
 	    // Lecture des noeuds
 	    for (int num_node = 0 ; num_node < nb_nodes ; num_node++) {
@@ -105,67 +106,73 @@ public class Graphe {
 		longitude = ((float)dis.readInt ()) / 1E6f ;
 		latitude = ((float)dis.readInt ()) / 1E6f ;
 		
+		//On recup le nombre de successeurs dans le fichier
 		nbSuccesseurs = dis.readUnsignedByte() ;
+		
+		//On crée le noeud num_node
 		this.noeuds.add(new Noeud(num_node, latitude, longitude));
+		//On rempli le nb de successeurs pour ce noeud
 		nsuccesseurs_a_lire[num_node] = nbSuccesseurs;
 	    }
 	    
 	    Utils.checkByte(255, dis) ;
 	    
-	    // Lecture des descripteurs
+	    // Lecture des descripteurs du graphe
 	    for (int num_descr = 0 ; num_descr < nb_descripteurs ; num_descr++) {
-		// Lecture du descripteur numero num_descr
-		descripteurs[num_descr] = new Descripteur(dis) ;
+	    	// Lecture du descripteur numero num_descr
+	    	descripteurs[num_descr] = new Descripteur(dis) ;
 
-		// On affiche quelques descripteurs parmi tous.
-		if (0 == num_descr % (1 + nb_descripteurs / 400))
-		    System.out.println("Descripteur " + num_descr + " = " + descripteurs[num_descr]) ;
+	    	// On affiche quelques descripteurs parmi tous.
+	    	if (0 == num_descr % (1 + nb_descripteurs / 400))
+	    		System.out.println("Descripteur " + num_descr + " = " + descripteurs[num_descr]) ;
 	    }
 	    
 	    Utils.checkByte(254, dis) ;
 	    
 	    // Lecture des successeurs
 	    for (int num_node = 0 ; num_node < nb_nodes ; num_node++) {
-		// Lecture de tous les successeurs du noeud num_node
-		for (int num_succ = 0 ; num_succ < nsuccesseurs_a_lire[num_node] ; num_succ++) {
-		    // zone du successeur
-		    int succ_zone = dis.readUnsignedByte() ;
+	    	// Lecture de tous les successeurs du noeud num_node
+	    	for (int num_succ = 0 ; num_succ < nsuccesseurs_a_lire[num_node] ; num_succ++) {
+	    		// zone du successeur
+	    		int succ_zone = dis.readUnsignedByte() ;
 
-		    // numero de noeud du successeur
-		    int dest_node = Utils.read24bits(dis) ;
+	    		// numero de noeud du successeur
+	    		int dest_node = Utils.read24bits(dis) ;
 
-		    // descripteur de l'arete
-		    int descr_num = Utils.read24bits(dis) ;
+	    		// descripteur de l'arete
+	    		int descr_num = Utils.read24bits(dis) ;
 
-		    // longueur de l'arete en metres
-		    int longueur  = dis.readUnsignedShort() ;
+	    		// longueur de l'arete en metres
+	    		int longueur  = dis.readUnsignedShort() ;
 
-		    // Nombre de segments constituant l'arete
-		    int nb_segm   = dis.readUnsignedShort() ;
-
-		    edges++ ;
+	    		// Nombre de segments constituant l'arete
+	    		int nb_segm   = dis.readUnsignedShort() ;
+	    		
+	    		//On ajoute l'arete à la liste des routes
+	    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num]));
+	    		edges++ ;
 		    
-		    Couleur.set(dessin, descripteurs[descr_num].getType()) ;
+	    		Couleur.set(dessin, descripteurs[descr_num].getType()) ;
 
-		    float current_long = longitudes[num_node] ;
-		    float current_lat  = latitudes[num_node] ;
+	    		float current_long = longitude ;
+	    		float current_lat  = latitude ;
 
-		    // Chaque segment est dessine'
-		    for (int i = 0 ; i < nb_segm ; i++) {
-			float delta_lon = (dis.readShort()) / 2.0E5f ;
-			float delta_lat = (dis.readShort()) / 2.0E5f ;
-			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
-			current_long += delta_lon ;
-			current_lat  += delta_lat ;
-		    }
+	    		// Chaque segment est dessine'
+	    		for (int i = 0 ; i < nb_segm ; i++) {
+	    			float delta_lon = (dis.readShort()) / 2.0E5f ;
+	    			float delta_lat = (dis.readShort()) / 2.0E5f ;
+	    			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
+	    			current_long += delta_lon ;
+	    			current_lat  += delta_lat ;
+	    		}
 		    
-		    // Le dernier trait rejoint le sommet destination.
-		    // On le dessine si le noeud destination est dans la zone du graphe courant.
-		    if (succ_zone == numzone) {
-			dessin.drawLine(current_long, current_lat, longitudes[dest_node], latitudes[dest_node]) ;
-		    }
-		}
-	    }
+	    		// Le dernier trait rejoint le sommet destination.
+	    		// On le dessine si le noeud destination est dans la zone du graphe courant.
+	    		if (succ_zone == numzone) {
+	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+		    	}
+	    	}
+	   }
 	    
 	    Utils.checkByte(253, dis) ;
 
@@ -217,10 +224,13 @@ public class Graphe {
 	    float minDist = Float.MAX_VALUE ;
 	    int   noeud   = 0 ;
 	    
-	    for (int num_node = 0 ; num_node < longitudes.length ; num_node++) {
-		float londiff = (longitudes[num_node] - lon) ;
+	    for (int num_node = 0 ; num_node < noeuds.size() ; num_node++) {
+		/*float londiff = (longitudes[num_node] - lon) ;
 		float latdiff = (latitudes[num_node] - lat) ;
-		float dist = londiff*londiff + latdiff*latdiff ;
+		float dist = londiff*londiff + latdiff*latdiff ;*/
+	    	float londiff = (noeuds.get(num_node).getLon() - lon) ;
+			float latdiff = (noeuds.get(num_node).getLat() - lat) ;
+			float dist = londiff*londiff + latdiff*latdiff ;
 		if (dist < minDist) {
 		    noeud = num_node ;
 		    minDist = dist ;
@@ -230,7 +240,8 @@ public class Graphe {
 	    System.out.println("Noeud le plus proche : " + noeud) ;
 	    System.out.println() ;
 	    dessin.setColor(java.awt.Color.red) ;
-	    dessin.drawPoint(longitudes[noeud], latitudes[noeud], 5) ;
+	    //dessin.drawPoint(longitudes[noeud], latitudes[noeud], 5) ;
+	    dessin.drawPoint(noeud.get(noeud).Lon, noeud.get(noeud), 5) ;
 	}
     }
 

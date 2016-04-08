@@ -1,6 +1,5 @@
 package core;
 
-import java.io.DataInputStream;
 import base.Descripteur;
 
 public class Arete {
@@ -37,17 +36,17 @@ public class Arete {
 	 * 
 	 */
 	
-	public Arete(Noeud a, Noeud b, char type, boolean sensUnique, int vitMax, String nom){
+	/* public Arete(Noeud a, Noeud b, char type, boolean sensUnique, int vitMax, String nom){
 		this.depart = a;
 		this.arrivee = b;
-		this.desc = new Descripteur(new DataInputStream(/*Que mettre ici ? La question que les français se posent!*/));
+		this.desc = new Descripteur(new DataInputStream());//Que mettre ici ? La question que les français se posent!
 		this.depart.addSuiv(b);
 		
 		if(!desc.isSensUnique()){
 			this.depart.addSuiv(b);
 			this.arrivee.addSuiv(a);
 		}
-	}
+	}*/
 	
 	public Noeud getDepart(){return this.depart;}
 	
