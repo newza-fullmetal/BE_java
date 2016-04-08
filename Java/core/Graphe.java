@@ -241,7 +241,7 @@ public class Graphe {
 	    System.out.println() ;
 	    dessin.setColor(java.awt.Color.red) ;
 	    //dessin.drawPoint(longitudes[noeud], latitudes[noeud], 5) ;
-	    dessin.drawPoint(noeud.get(noeud).Lon, noeud.get(noeud), 5) ;
+	    dessin.drawPoint(noeuds.get(noeud).getLon(), noeuds.get(noeud).getLat(), 5) ;
 	}
     }
 
