@@ -171,10 +171,12 @@ public class Graphe {
 	    		// On le dessine si le noeud destination est dans la zone du graphe courant.
 	    		if (succ_zone == numzone) {
 	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+	    			
 	    			//On ajoute l'arete à la liste des routes
-		    		//System.out.println("Noeud de départ :" + noeuds.get(num_node).getId() + " Noeud dest : " + noeuds.get(dest_node).getId());
-		    	
 		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num]));
+		    		
+		    		//On ajoute le noeud dest_node à la liste des successeurs de num_node
+		    		noeuds.get(num_node).addSuiv(noeuds.get(dest_node));
 		    	}
 	    	}
 	   }

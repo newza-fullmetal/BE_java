@@ -26,6 +26,7 @@ public class Noeud {
 		
 	}
 	
+	
 	public void addSuiv(Noeud n){
 		this.suiv.add(n);
 	}
