@@ -33,9 +33,19 @@ public class Noeud {
 	
 	
 	
+	
+	public void succToString(){
+		System.out.println("Le Noeud " + this.id);
+		for(Noeud succ : this.suiv){
+			System.out.println("|" + succ.getId());
+		}
+		
+		
+	}
+	
 	@Override
 	public String toString() {
-		return "Noeud [id=" + id + ", lat=" + lat + ", lon=" + lon + ", suiv=" + suiv + "]";
+		return "Noeud [id=" + this.id + ", lat=" + this.lat + ", lon=" + this.lon + ", suiv=" + this.suiv + "]";
 	}
 
 	/**

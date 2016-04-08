@@ -175,10 +175,11 @@ public class Graphe {
 	    			//On ajoute l'arete à la liste des routes
 		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num]));
 		    		
-		    		//On ajoute le noeud dest_node à la liste des successeurs de num_node
-		    		noeuds.get(num_node).addSuiv(noeuds.get(dest_node));
+		    		//L'ajout des successeurs se fait à la création de l'arrete	
+		    		//noeuds.get(num_node).succToString();
 		    	}
 	    	}
+	    	
 	   }
 	    
 	    Utils.checkByte(253, dis) ;
