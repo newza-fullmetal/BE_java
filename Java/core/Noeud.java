@@ -75,5 +75,9 @@ public class Noeud {
 		return suiv;
 	}
 	
+	public int getNbSuiv(){
+		return this.suiv.size();
+	}
+	
 	
 }

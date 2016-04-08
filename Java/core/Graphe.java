@@ -307,5 +307,14 @@ public class Graphe {
 	}
 
     }
+    
+    public float nb_moyen_suiv(){
+    	float moy = 0.0f;
+    	
+    	for (int num_node = 0 ; num_node < this.nbNoeuds ; num_node++){
+    		moy+=noeuds.get(num_node).getNbSuiv();
+    	}
+    	return moy/nbNoeuds;
+    }
 
 }
