@@ -39,10 +39,10 @@ public class Launch {
     }
 
     public static void main(String[] args) {
-	/*Le code de départ
-	 * Launch launch = new Launch(args) ;
+	//Le code de départ
+	Launch launch = new Launch(args) ;
 	launch.go () ;
-	*/
+	
     	
     	
     }

@@ -148,14 +148,15 @@ public class Graphe {
 	    		// Nombre de segments constituant l'arete
 	    		int nb_segm   = dis.readUnsignedShort() ;
 	    		
-	    		//On ajoute l'arete à la liste des routes
-	    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num]));
+	    		
 	    		edges++ ;
 		    
 	    		Couleur.set(dessin, descripteurs[descr_num].getType()) ;
 
-	    		float current_long = longitude ;
-	    		float current_lat  = latitude ;
+	    		float current_long = noeuds.get(num_node).getLon() ;
+	    		float current_lat  = noeuds.get(num_node).getLat() ;
+	    		longitude = noeuds.get(dest_node).getLon() ;
+	    		latitude  = noeuds.get(dest_node).getLat() ;
 
 	    		// Chaque segment est dessine'
 	    		for (int i = 0 ; i < nb_segm ; i++) {
@@ -170,6 +171,10 @@ public class Graphe {
 	    		// On le dessine si le noeud destination est dans la zone du graphe courant.
 	    		if (succ_zone == numzone) {
 	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+	    			//On ajoute l'arete à la liste des routes
+		    		//System.out.println("Noeud de départ :" + noeuds.get(num_node).getId() + " Noeud dest : " + noeuds.get(dest_node).getId());
+		    	
+		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num]));
 		    	}
 	    	}
 	   }
