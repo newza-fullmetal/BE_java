@@ -38,6 +38,7 @@ public class Graphe {
     /*
      * Ces attributs constituent une structure ad-hoc pour stocker les informations du graphe.
      * Vous devez modifier et ameliorer ce choix de conception simpliste.
+     * 
      */
     /*private float[] longitudes ;
     private float[] latitudes ;*/
@@ -313,8 +314,20 @@ public class Graphe {
     	
     	for (int num_node = 0 ; num_node < this.nbNoeuds ; num_node++){
     		moy+=noeuds.get(num_node).getNbSuiv();
+    		
     	}
     	return moy/nbNoeuds;
     }
 
+}
+
+
+
+
+public float cout_distance(){
+	float
+	for(int i=0; i < this.nbNoeuds; i++){
+		//Carre java ?
+		(this.Tab_noeuds[i].getLat() * this.Tab_noeuds[i].getLat())
+	}
 }
