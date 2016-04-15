@@ -352,7 +352,7 @@ public float cout_temps(){
 	float duree = 0;
 	for(Arete a : this.List_arete){
 		//exprimer le temps en minutes
-		duree += 1/(a.getDescripteur().vitesseMax()) * Fonctions.dist_noeuds(a.getDepart(), a.getArrivee());
+		duree += 1/(a.getDescripteur().vitesseMax()  * 1000 / 60 ) * Fonctions.dist_noeuds(a.getDepart(), a.getArrivee());
 	}
 	
 	return duree;
