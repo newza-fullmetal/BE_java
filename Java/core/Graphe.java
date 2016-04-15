@@ -318,16 +318,49 @@ public class Graphe {
     	}
     	return moy/nbNoeuds;
     }
+    
+    
 
+}
+
+////////////////////////////////////// Dans chemin ///////////////////////////////:
+
+/**
+ * 
+ * Calcule la longueur en distance du chemin
+ */
+public double cout_distance(){
+	double dist = 0;
+	double blong = this.List_noeuds.get(0).getLon();
+	double blat = this.List_noeuds.get(0).getLat();
+	
+	for(int i = 1; i < this.List_noeuds.size(); i++){
+		dist += Math.sqrt(Math.pow(this.List_noeuds.get(i).getLat() - bLat, 2) + Math.pow(bLon - this.List_noeuds.get(i).getLon(), 2));
+		blat = this.List_noeuds.get(i).getLat;
+		blon = this.List_noeuds.get(i).getLon;
+	}
+	
+	return dist;
+}
+
+
+/**
+ * Calcule la durée en temps du chemin
+ */
+
+public float cout_temps(){
+	float duree = 0;
+	for(Arete a : this.List_arete){
+		//exprimer le temps en minutes
+		duree += 1/(a.getDescripteur().vitesseMax()) * ;
+	}
+	
+	return duree;
 }
 
 
 
-
-public float cout_distance(){
-	float
-	for(int i=0; i < this.nbNoeuds; i++){
-		//Carre java ?
-		(this.Tab_noeuds[i].getLat() * this.Tab_noeuds[i].getLat())
-	}
+/////////////////////////////// Dans une classe abstraite en static //////////////////////////////////
+public double dist_noeuds(Noeud n1, Noeud n2){
+	return Math.sqrt(Math.pow(n1.getLat() - n2.getLat(), 2) + Math.pow(n2.getLon() - n1.getLon(), 2));
 }
