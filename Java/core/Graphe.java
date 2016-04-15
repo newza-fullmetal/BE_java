@@ -320,6 +320,17 @@ public class Graphe {
     }
     
     
+    public void dessiner_chemin(Chemin ch){
+    	
+    	
+    	dessin.setColor(java.awt.Color.green) ;
+	   
+    	for(Arete a : ch.List_arete)
+	    dessin.drawLine(a.getDepart().getLon(), a.getArrivee().getLon(), a.getDepart().getLat(), a.getArrivee().getLat()) ;
+    	
+    }
+    
+    
 
 }
 
