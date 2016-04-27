@@ -7,7 +7,9 @@
 // ******************ERRORS********************************
 // Throws RuntimeException for findMin and deleteMin when empty
 
-import java.util.* ;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 
 /**
  * Implements a binary heap.
@@ -22,6 +24,14 @@ public class BinaryHeap<E extends Comparable<E>> {
     // Java genericity does not work with arrays.
     // We have to use an ArrayList
     private ArrayList<E> array; // The heap array
+    
+    private HashMap<E, Integer> map;
+    /*
+     * On utilise une HashMap pour associer à chaque valeur de array sa position dans l'ArrayList
+     * On a donc : Key => Element, Value => index dans l'ArrayList array
+     */
+    
+    
 
     /**
      * Construct the binary heap.
@@ -29,21 +39,25 @@ public class BinaryHeap<E extends Comparable<E>> {
     public BinaryHeap() {
         this.currentSize = 0;
         this.array = new ArrayList<E>() ;
+        this.map = new HashMap<E, Integer>();
     }
 
     // Constructor used for debug.
     private BinaryHeap(BinaryHeap<E> heap) {
 	this.currentSize = heap.currentSize ;
 	this.array = new ArrayList<E>(heap.array) ;
+	this.map = new HashMap<E, Integer>();
     }
 
     // Sets an element in the array
     private void arraySet(int index, E value) {
 	if (index == this.array.size()) {
 	    this.array.add(value) ;
+	    this.map.put(value, index);
 	}
 	else {
 	    this.array.set(index, value) ;
+	    this.map.put(value, index);
 	}
     }
 
@@ -130,6 +144,22 @@ public class BinaryHeap<E extends Comparable<E>> {
 		}		
 	    }
 	}
+    }
+    /**
+     * @param element the element you want the position of
+     */
+    public int getElementPosition(E element){
+    	return this.map.get(element);
+    }
+    
+    /**
+     * Update the heap after an insert
+     * 
+     */
+    public void update(E element){
+    	int position = this.getElementPosition(element);
+    	//On traite le cas ou on a diminué l'élément (dans un plus court chemin, les distances max diminuent et ne peuvent augmenter
+    	this.percolateUp(position);
     }
 
     /**
