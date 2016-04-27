@@ -371,7 +371,17 @@ public float cout_temps(){
 
 
 
-/////////////////////////////// Dans une classe abstraite en static //////////////////////////////////
+/////////////////////////////// Dans une classe abstraite Fonctions en static //////////////////////////////////
 public double dist_noeuds(Noeud n1, Noeud n2){
 	return Math.sqrt(Math.pow(n1.getLat() - n2.getLat(), 2) + Math.pow(n2.getLon() - n1.getLon(), 2));
 }
+/*
+* Questions
+*?
+*Si les noeuds ne sont pas reliés (s'il n'existe pas de chemin entre les deux noeuds
+*
+*Le tas permet d'avoir les valeurs classées (celle qui nous intéresse en haut)
+*
+*
+*
+*/
