@@ -5,7 +5,9 @@ import java.util.*;
 public class Noeud {
 	
 
-	/** Un identifiant pour définir le noeud */
+	/** 
+	 * Un identifiant pour définir le noeud 
+	 */
 	private int id;
 	
 	/**Les coordonées du lieu */
@@ -15,8 +17,11 @@ public class Noeud {
 	/** La liste des successeurs */
 	private ArrayList<Noeud> suiv;
 	
-	/*
+	/**
 	 * Le constructeur
+	 * @param id l'id du noeud à créer
+	 * @param lat la latitude du noeud
+	 * @param lon la longitude du noeud
 	 */
 	public Noeud(int id, float lat, float lon){
 		this.lat = lat;
@@ -26,7 +31,10 @@ public class Noeud {
 		
 	}
 	
-	
+	/**
+	 * Ajoute un noeud à la liste des suivants
+	 * @param n le noeud à ajouter
+	 */
 	public void addSuiv(Noeud n){
 		this.suiv.add(n);
 	}
