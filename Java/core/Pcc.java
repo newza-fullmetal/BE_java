@@ -33,8 +33,21 @@ public class Pcc extends Algo {
 	// Demander la zone et le sommet destination.
 	this.zoneOrigine = gr.getZone () ;
 	this.destination = readarg.lireInt ("Numero du sommet destination ? ");
+	
+	this.carte = new HashMap<Noeud, Label>();
+	this.tas = new BinaryHeap<Label>();
+	
+	
     }
-
+    /**
+     * Première version de l'algorithme de Dijkstra
+     */
+    public void dijkstra(){
+    	
+    		
+    	
+    	
+    }
     public void run() {
 
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;

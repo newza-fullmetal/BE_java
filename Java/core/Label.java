@@ -103,6 +103,12 @@ public class Label implements Comparable<Label>{
 	 */
 	public int getCourant(){ return this.id_sommet_courant;}
 	
+	/**
+	 * Permet de comparer deux labels
+	 * @param lab le deuxième label à comparer
+	 * @return 0 si les labels sont égaux en cout
+	 * 
+	 */
 	public int compareTo(Label lab){
 		//on utilise la méthode de comparaison des doubles
 		Double d = new Double(this.getCout());
