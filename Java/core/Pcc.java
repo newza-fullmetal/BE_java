@@ -11,6 +11,16 @@ public class Pcc extends Algo {
 
     protected int zoneDestination ;
     protected int destination ;
+    
+    /**
+     * La carte qui permet d'associer un label à un noeud
+     */
+    protected HashMap<Noeud, Label> carte;
+    
+    /**
+     * Le tas qui contient les noeuds visités
+     */
+    protected BinaryHeap<Label> tas;
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
 	super(gr, sortie, readarg) ;
