@@ -9,7 +9,7 @@ package core;
  * @author florian
  *
  */
-public class Label {
+public class Label implements Comparable<Label>{
 
 	/**
 	 * L'état du sommet au sein de l'agorithme (vrai si fixé par l'algo)
@@ -102,5 +102,12 @@ public class Label {
 	 * @return l'id du sommet courant
 	 */
 	public int getCourant(){ return this.id_sommet_courant;}
+	
+	public int compareTo(Label lab){
+		//on utilise la méthode de comparaison des doubles
+		Double d = new Double(this.getCout());
+		return d.compareTo(new Double(lab.getCout()));
+		
+	}
 	
 }
