@@ -1,6 +1,7 @@
 package core ;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import base.Readarg ;
@@ -44,7 +45,17 @@ public class Pcc extends Algo {
      */
     public void dijkstra(){
     	
-    		
+    	//On récupère les noeuds du graphe
+    	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
+    	noeuds = this.graphe.getNoeuds();
+    	
+    	//On associe un label à l'origine
+    	this.carte.put(noeuds.get(this.origine), new Label(noeuds.get(this.origine)));
+    	//On ajoute l'origine dans le tas
+    	this.tas.insert(this.carte.get(noeuds.get(this.origine)));
+    	
+    	//On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
+    	
     	
     	
     }

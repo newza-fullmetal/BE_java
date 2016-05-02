@@ -57,7 +57,7 @@ public class Graphe {
     // Deux malheureux getters plus un.
     public Dessin getDessin() { return dessin ; }
     public int getZone() { return numzone ; }
-    public ArrayList<Noeud> getNoeud(){ return this.noeuds;}
+    public ArrayList<Noeud> getNoeuds(){ return this.noeuds;}
 
     // Le constructeur cree le graphe en lisant les donnees depuis le DataInputStream
     public Graphe (String nomCarte, DataInputStream dis, Dessin dessin) {
