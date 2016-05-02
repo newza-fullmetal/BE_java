@@ -1,3 +1,4 @@
+package core;
 //
 // ******************PUBLIC OPERATIONS*********************
 // void insert( x )       --> Insert x

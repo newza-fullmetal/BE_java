@@ -1,3 +1,4 @@
+package core;
 public class UnEntier implements Comparable<UnEntier> {
 
     // Attribut mutable

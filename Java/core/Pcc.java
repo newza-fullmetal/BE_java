@@ -1,6 +1,8 @@
 package core ;
 
-import java.io.* ;
+import java.io.PrintStream;
+import java.util.HashMap;
+import BinaryHeap;
 import base.Readarg ;
 
 public class Pcc extends Algo {
