@@ -253,12 +253,31 @@ public class Graphe {
 	    dessin.drawPoint(noeuds.get(noeud).getLon(), noeuds.get(noeud).getLat(), 5) ;
 	}
     }
+    
+    public Arete get_arete(int a, int b) {
+    	int ind=0; 
+    	int id_arrête = -1;  
+    	float vitesse_moy = 10000f; 
+    	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
+    		if ( (a != this.routes.get(ind).getDepart().getId()) && ( b!= this.routes.get(ind).getArrivee().getId() )) {
+    			if (this.routes.get(ind).getDescripteur().vitesseMax()>vitesse_moy) {
+    				id_arrête = ind;
+    			}
+    		}
+    	}
+    	if (id_arrête == -1) {
+    		return null; 
+    	}
+    	return this.routes.get(id_arrête); 
+    	
+    }
 
     /**
      *  Charge un chemin depuis un fichier .path (voir le fichier FORMAT_PATH qui decrit le format)
      *  Verifie que le chemin est empruntable et calcule le temps de trajet.
      */
     public void verifierChemin(DataInputStream dis, String nom_chemin) {
+    	Chemin chemin; 
 	
 	try {
 	    
@@ -276,6 +295,7 @@ public class Graphe {
 	    }
 
 	    int nb_noeuds = dis.readInt () ;
+	    chemin = new Chemin(version, magic, this.idcarte, nb_noeuds); 
 
 	    // Origine du chemin
 	    int first_zone = dis.readUnsignedByte() ;
@@ -294,6 +314,9 @@ public class Graphe {
 	    for (int i = 0 ; i < nb_noeuds ; i++) {
 		current_zone = dis.readUnsignedByte() ;
 		current_node = Utils.read24bits(dis) ;
+		chemin.add_noeud(this.noeuds.get(current_node));
+		chemin.add_arete(this.get_arete(chemin.get_lastnode().getId(), current_node));
+		
 		System.out.println(" --> " + current_zone + ":" + current_node) ;
 	    }
 
@@ -325,55 +348,17 @@ public class Graphe {
     	
     	dessin.setColor(java.awt.Color.green) ;
 	   
-    	for(Arete a : ch.List_arete)
+    	for(Arete a : ch.List_Arete){
 	    dessin.drawLine(a.getDepart().getLon(), a.getArrivee().getLon(), a.getDepart().getLat(), a.getArrivee().getLat()) ;
+    	}
     	
-    }
-    
-    
-
-}
-
-////////////////////////////////////// Dans chemin ///////////////////////////////:
-
-/**
- * 
- * Calcule la longueur en distance du chemin
- */
-public double cout_distance(){
-	double dist = 0;
-	double blong = this.List_noeuds.get(0).getLon();
-	double blat = this.List_noeuds.get(0).getLat();
-	
-	for(int i = 1; i < this.List_noeuds.size(); i++){
-		dist += Math.sqrt(Math.pow(this.List_noeuds.get(i).getLat() - bLat, 2) + Math.pow(bLon - this.List_noeuds.get(i).getLon(), 2));
-		blat = this.List_noeuds.get(i).getLat;
-		blon = this.List_noeuds.get(i).getLon;
 	}
-	
-	return dist;
-}
-
-
-/**
- * Calcule la durée en temps du chemin
- */
-
-public float cout_temps(){
-	float duree = 0;
-	for(Arete a : this.List_arete){
-		//exprimer le temps en minutes
-		duree += 1/(a.getDescripteur().vitesseMax()  * 1000 / 60 ) * Fonctions.dist_noeuds(a.getDepart(), a.getArrivee());
-	}
-	
-	return duree;
-}
-
 
 
 /////////////////////////////// Dans une classe abstraite Fonctions en static //////////////////////////////////
-public double dist_noeuds(Noeud n1, Noeud n2){
+public static double dist_noeuds(Noeud n1, Noeud n2){
 	return Math.sqrt(Math.pow(n1.getLat() - n2.getLat(), 2) + Math.pow(n2.getLon() - n1.getLon(), 2));
+}
 }
 /*
 * Questions
