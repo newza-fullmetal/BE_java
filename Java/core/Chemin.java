@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Chemin {
 	private int magicnumber; 
@@ -10,7 +11,7 @@ public class Chemin {
 	private ArrayList<Noeud> List_noeuds; 
 	public ArrayList<Arete> List_Arete; 
 	private double Longueur; // en mètre 
-	private int Temps; // en min
+	private double Temps; // en min
 	
 		public Chemin(int version, int magicnumber, int ID_map, int NB_noeud ) {
 			this.version = version ; 
@@ -19,6 +20,8 @@ public class Chemin {
 			this.Nb_noeud = NB_noeud;
 			this.List_noeuds = new ArrayList<Noeud>();	
 			this.Longueur = -1;
+			this.List_Arete = new ArrayList<Arete>();
+			this.Temps = -1; 
 			
 			
 		}
@@ -33,12 +36,12 @@ public class Chemin {
 			double blat2 = 0;
 			
 			for(int i = 1; i < this.List_noeuds.size(); i++){
-				dist += Math.sqrt(Math.pow(this.List_noeuds.get(i).getLat() - blat1, 2) + Math.pow(blong1 - this.List_noeuds.get(i).getLon(), 2));
+				//dist += Math.sqrt(Math.pow(this.List_noeuds.get(i).getLat() - blat1, 2) + Math.pow(blong1 - this.List_noeuds.get(i).getLon(), 2));
 				blat2 = this.List_noeuds.get(i).getLat();
 				blong2 = this.List_noeuds.get(i).getLon();
-//				dist +=  Graphe.distance(blong1, blat1, blong2, blat2);
-//				blat1=blat2; 
-//				blong1=blong2;
+				dist +=  Graphe.distance(blong1, blat1, blong2, blat2);
+				blat1=blat2; 
+				blong1=blong2;
 			}
 			return dist;
 		}
@@ -46,11 +49,19 @@ public class Chemin {
 		/**
 		 * Calcule la durée en temps du chemin
 		 */
-		public float cout_temps(){
-			float duree = 0;
-			for(Arete a : this.List_Arete){
-				//exprimer le temps en minutes
-				duree += 1/(a.getDescripteur().vitesseMax()  * 1000 / 60 ) * Graphe.dist_noeuds(a.getDepart(), a.getArrivee());
+		public double cout_temps(){
+			double duree = 0;			
+			if (this.List_Arete.isEmpty() ){
+				System.out.println("la liste d'arrête est vide, pas de distance à calculer");
+			}
+			else {
+				for(Arete a : this.List_Arete){
+					//exprimer le temps en minutes
+					System.out.println(a);
+					if ( a!= null ) {					
+						duree += 1.0/(a.getDescripteur().vitesseMax()  * 1000.0 / 60.0 ) * Graphe.distance(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat());
+					}
+				}
 			}
 			
 			return duree;
@@ -71,6 +82,9 @@ public class Chemin {
 		}
 		
 		public Noeud get_lastnode(){
+			if (this.List_noeuds.isEmpty()) {
+				return null;
+			}
 			return this.List_noeuds.get(this.get_listnode().size()-1);
 		}
 		public double get_Longueur() {
@@ -78,6 +92,13 @@ public class Chemin {
 				this.Longueur = this.cout_distance();
 			}
 			return this.Longueur; 
+		}
+		
+		public double get_Temps() {
+			if (this.Temps == -1){
+				this.Temps = this.cout_temps();
+			}
+			return this.Temps;
 		}
 		
 }

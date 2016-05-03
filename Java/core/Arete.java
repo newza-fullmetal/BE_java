@@ -47,6 +47,9 @@ public class Arete {
 			this.arrivee.addSuiv(a);
 		}
 	}*/
+	public String toString() {
+		return "Arrête partant du noeud " + this.getDepart().getId() + " jusqu'à" + this.getArrivee().getId();
+	}
 	
 	public Noeud getDepart(){return this.depart;}
 	

@@ -255,15 +255,25 @@ public class Graphe {
 	}
     }
     
+    
+    
+    /**
+     *  Récupère une arête avec deux noeuds en paramètre
+     *  
+     *    
+    */
+ 
     public Arete get_arete(int a, int b) {
     	int ind=0; 
     	int id_arrête = -1;  
     	float vitesse_moy = 10000f; 
     	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
-    		if ( (a != this.routes.get(ind).getDepart().getId()) && ( b!= this.routes.get(ind).getArrivee().getId() )) {
-    			if (this.routes.get(ind).getDescripteur().vitesseMax()>vitesse_moy) {
-    				id_arrête = ind;
-    			}
+    		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
+    			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) ) {
+    			id_arrête = ind;
+//    			if (this.routes.get(ind).getDescripteur().vitesseMax()<vitesse_moy) {
+//    				id_arrête = ind;
+//    			}
     		}
     	}
     	if (id_arrête == -1) {
@@ -315,8 +325,10 @@ public class Graphe {
 	    for (int i = 0 ; i < nb_noeuds ; i++) {
 		current_zone = dis.readUnsignedByte() ;
 		current_node = Utils.read24bits(dis) ;
+		if (i!=0) { // on n'ajoute pas d'arrêtes au premier passage car pas de noeuds. 
+			chemin.add_arete(this.get_arete(chemin.get_lastnode().getId(), current_node));
+		}
 		chemin.add_noeud(this.noeuds.get(current_node));
-		chemin.add_arete(this.get_arete(chemin.get_lastnode().getId(), current_node));
 		
 		System.out.println(" --> " + current_zone + ":" + current_node) ;
 	    }
@@ -325,11 +337,19 @@ public class Graphe {
 		    System.out.println("Le chemin " + nom_chemin + " ne termine pas sur le bon noeud.") ;
 		    System.exit(1) ;
 		}
-
+	    
+	    dessiner_chemin(chemin); //dessin du chemin 
+	    System.out.println("le chemin a une distance de " + chemin.get_Longueur() + "mètres");// calcul de la longueur en mètres 
+	    System.out.println("le chemin a une durée de " + chemin.get_Temps() + "minutes");
+	    
+	    
 	} catch (IOException e) {
 	    e.printStackTrace() ;
 	    System.exit(1) ;
 	}
+	
+	
+	
 
     }
     
@@ -350,8 +370,10 @@ public class Graphe {
     	dessin.setColor(java.awt.Color.green) ;
 	   
     	for(Arete a : ch.List_Arete){
-	    dessin.drawLine(a.getDepart().getLon(), a.getArrivee().getLon(), a.getDepart().getLat(), a.getArrivee().getLat()) ;
-    	}
+    		if (a!=null) {
+    				dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat()) ;
+    		}
+    	}    	
     	
 	}
 
