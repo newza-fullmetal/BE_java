@@ -42,14 +42,16 @@ public class Pcc extends Algo {
     }
     /**
      * Première version de l'algorithme de Dijkstra
+     * @param  param "Temps" ou "Distance"
      */
-    public void dijkstra(){
+    public void dijkstra(String type){
     	
     	//On récupère les noeuds du graphe
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
     	
     	noeuds = this.graphe.getNoeuds();
     	Label lab_courant = new Label(noeuds.get(this.origine));
+    	
     	//int noeud_courant = this.origine;
     	
     	//On associe un label à l'origine
@@ -71,23 +73,27 @@ public class Pcc extends Algo {
     	while(lab_courant.getCourant() != this.destination || !this.tas.isEmpty()){
     		//On ajoute les suivants du noeud de cout le plus faible
     		for(Noeud suiv: noeuds.get(lab_courant.getCourant()).getSuiv()){
-    			this.tas.insert(new Label(suiv));
+    			Label lab_suiv = new Label(suiv);
+    			lab_suiv.setPere(suiv);
+    			//On calcule le cout du suivant
+    			double cout = this.tas.findMin().getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type) ;
+    			
+    			lab_suiv.updateCout(new_cout);
+    			this.tas.insert();
+    			this.tas.update();
+    			this.carte.put(suiv, new Label(suiv));
     		}
     		
-    		//On met à jour les couts en cherchant pour chaque noeud l'arrete la plus courte (mise à jour dans le tas)
+    		//On met à jour les couts en cherchant pour chaque noeud l'arrete la plus courte (mise à jour dans le tas) TODO
     		
     		
-    		
-    		
-    		
-    		
-    		
-    		
-    		
+    		//On sort le sommet de cout faible (haut du tas), on met son label à jour dans la carte (HashMap)
+    		lab_courant = this.tas.findMin();
     		this.carte.put(noeuds.get(lab_courant.getCourant()), new Label(noeuds.get(lab_courant.getCourant())));
     		
     		
     		lab_courant = this.tas.findMin();
+    		//quand on sort un label du tas, il passe à visité
     	}
     
     	
