@@ -175,7 +175,7 @@ public class Graphe {
 	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
 	    			
 	    			//On ajoute l'arete à la liste des routes
-		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num]));
+		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm));
 		    		
 		    		//L'ajout des successeurs se fait à la création de l'arrete	
 		    		//noeuds.get(num_node).succToString();
@@ -262,7 +262,48 @@ public class Graphe {
      *  
      *    
     */
+    //retourne l'arrête la plus courte en temps ou en distance 
+    public Arete get_arete(int a, int b, String param) {
+    	int ind=0; 
+    	int id_arrête = -1;  
+    	float vitesse_min = 10000f; 
+    	float distance_min= 10000f;
+    	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
+    		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
+    			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) && (this.routes.get(ind).getDescripteur().isSensUnique())) {
+    			switch (param) {
+    			case "Temps" : 
+    				if (this.routes.get(ind).getVitesse()< vitesse_min );
+    				{
+    					vitesse_min = this.routes.get(ind).getVitesse(); 
+    					id_arrête = ind; 
+    				}
+    				break;
+    			case "Distance" :
+    				if (this.routes.get(ind).getLongueur()< distance_min );
+    				{
+    					vitesse_min = this.routes.get(ind).getLongueur(); 
+    					id_arrête = ind; 
+    				}
+    				break;
+    				
+    			default : 
+    				id_arrête = ind;
+    				
+    			}
+    		}
+    	}
+    	if (id_arrête == -1) {
+    		// il n'existe aucune arrête liant les deux noeuds
+    		return null; 
+    	}
+    	return this.routes.get(id_arrête); 
+    	
+    }
+    
+    
  
+    // marche que pour les piétons 
     public Arete get_arete(int a, int b) {
     	int ind=0; 
     	int id_arrête = -1;  
@@ -271,9 +312,9 @@ public class Graphe {
     		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
     			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) ) {
     			id_arrête = ind;
-//    			if (this.routes.get(ind).getDescripteur().vitesseMax()<vitesse_moy) {
-//    				id_arrête = ind;
-//    			}
+    			if (this.routes.get(ind).getDescripteur().vitesseMax()<vitesse_moy) {
+    				id_arrête = ind;
+    			}
     		}
     	}
     	if (id_arrête == -1) {

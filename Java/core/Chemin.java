@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Chemin {
 	private int magicnumber; 
@@ -29,19 +28,9 @@ public class Chemin {
 		 * Calcule la longueur en distance du chemin
 		 */
 		public double cout_distance(){
-			double dist = 0;
-			double blong1 = this.List_noeuds.get(0).getLon();
-			double blat1 = this.List_noeuds.get(0).getLat();
-			double blong2= 0; 
-			double blat2 = 0;
-			
-			for(int i = 1; i < this.List_noeuds.size(); i++){
-				//dist += Math.sqrt(Math.pow(this.List_noeuds.get(i).getLat() - blat1, 2) + Math.pow(blong1 - this.List_noeuds.get(i).getLon(), 2));
-				blat2 = this.List_noeuds.get(i).getLat();
-				blong2 = this.List_noeuds.get(i).getLon();
-				dist +=  Graphe.distance(blong1, blat1, blong2, blat2);
-				blat1=blat2; 
-				blong1=blong2;
+			double dist=0;
+			for(Arete a : this.List_Arete){
+				dist += a.getLongueur(); 
 			}
 			return dist;
 		}
@@ -59,7 +48,8 @@ public class Chemin {
 					//exprimer le temps en minutes
 					System.out.println(a);
 					if ( a!= null ) {					
-						duree += 1.0/(a.getDescripteur().vitesseMax()  * 1000.0 / 60.0 ) * Graphe.distance(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat());
+						//duree += 1.0/(a.getDescripteur().vitesseMax()  * 1000.0 / 60.0 ) * Graphe.distance(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat());
+						duree += 1.0/(a.getDescripteur().vitesseMax()  * 1000.0 / 60.0 ) * a.getLongueur() ; 
 					}
 				}
 			}
