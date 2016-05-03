@@ -47,15 +47,49 @@ public class Pcc extends Algo {
     	
     	//On récupère les noeuds du graphe
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
+    	
     	noeuds = this.graphe.getNoeuds();
+    	Label lab_courant = new Label(noeuds.get(this.origine));
+    	//int noeud_courant = this.origine;
     	
     	//On associe un label à l'origine
-    	this.carte.put(noeuds.get(this.origine), new Label(noeuds.get(this.origine)));
+    	
     	//On ajoute l'origine dans le tas
     	this.tas.insert(this.carte.get(noeuds.get(this.origine)));
     	
-    	//On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
     	
+    	
+    	/*On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
+    	--
+    	  On ajoute les suivants du noeud de cout le plus faible
+    	  On met à jour les couts en cherchant pour chaque noeud l'arrete la plus courte (mise à jour dans le tas)
+    	  On sort le sommet de cout faible (haut du tas), on met son label à jour dans la carte (HashMap)
+    	  On update le tas.
+    	--
+    	*/
+    	//On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
+    	while(lab_courant.getCourant() != this.destination || !this.tas.isEmpty()){
+    		//On ajoute les suivants du noeud de cout le plus faible
+    		for(Noeud suiv: noeuds.get(lab_courant.getCourant()).getSuiv()){
+    			this.tas.insert(new Label(suiv));
+    		}
+    		
+    		//On met à jour les couts en cherchant pour chaque noeud l'arrete la plus courte (mise à jour dans le tas)
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		
+    		this.carte.put(noeuds.get(lab_courant.getCourant()), new Label(noeuds.get(lab_courant.getCourant())));
+    		
+    		
+    		lab_courant = this.tas.findMin();
+    	}
+    
     	
     	
     }
