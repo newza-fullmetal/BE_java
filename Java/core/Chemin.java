@@ -48,8 +48,7 @@ public class Chemin {
 					//exprimer le temps en minutes
 					System.out.println(a);
 					if ( a!= null ) {					
-						//duree += 1.0/(a.getDescripteur().vitesseMax()  * 1000.0 / 60.0 ) * Graphe.distance(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat());
-						duree += 1.0/(a.getDescripteur().vitesseMax()  * 1000.0 / 60.0 ) * a.getLongueur() ; 
+						duree += a.getTemps() ; 
 					}
 				}
 			}

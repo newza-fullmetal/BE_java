@@ -80,4 +80,8 @@ public class Arete {
 	public float getLongueur() {return this.Longueur;} 
 	
 	public float getVitesse() { return this.desc.vitesseMax();};
+	
+	public double getTemps() {return 1.0/(this.desc.vitesseMax()  * 1000.0 / 60.0 ) * this.Longueur ; }
+	
+	public int getNbseg() { return this.nbseg; }
 }

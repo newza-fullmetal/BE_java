@@ -266,23 +266,23 @@ public class Graphe {
     public Arete get_arete(int a, int b, String param) {
     	int ind=0; 
     	int id_arrête = -1;  
-    	float vitesse_min = 10000f; 
+    	double temps_min = 10000f; 
     	float distance_min= 10000f;
     	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
     		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
     			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) && (this.routes.get(ind).getDescripteur().isSensUnique())) {
     			switch (param) {
     			case "Temps" : 
-    				if (this.routes.get(ind).getVitesse()< vitesse_min );
+    				if (this.routes.get(ind).getTemps()< temps_min );
     				{
-    					vitesse_min = this.routes.get(ind).getVitesse(); 
+    					temps_min = this.routes.get(ind).getTemps(); 
     					id_arrête = ind; 
     				}
     				break;
     			case "Distance" :
     				if (this.routes.get(ind).getLongueur()< distance_min );
     				{
-    					vitesse_min = this.routes.get(ind).getLongueur(); 
+    					distance_min = this.routes.get(ind).getLongueur(); 
     					id_arrête = ind; 
     				}
     				break;
@@ -307,13 +307,13 @@ public class Graphe {
     public Arete get_arete(int a, int b) {
     	int ind=0; 
     	int id_arrête = -1;  
-    	float vitesse_moy = 10000f; 
+    	double temps_min = 10000f; 
     	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
     		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
     			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) ) {
-    			id_arrête = ind;
-    			if (this.routes.get(ind).getDescripteur().vitesseMax()<vitesse_moy) {
+    			if (this.routes.get(ind).getTemps()<temps_min) {
     				id_arrête = ind;
+    				temps_min = this.routes.get(ind).getTemps();
     			}
     		}
     	}
@@ -404,7 +404,33 @@ public class Graphe {
     	return moy/nbNoeuds;
     }
     
+    public void dessiner_arete(Arete a) {
+    	
+    	float longitude =0; 
+    	float latitude = 0; 
+    	Couleur.set(dessin, a.getDescripteur().getType()) ;
+    	dessin.setColor(java.awt.Color.green);
+
+		float current_long = a.getDepart().getLon() ;
+		float current_lat  = a.getDepart().getLat() ;
+		longitude = a.getArrivee().getLon() ;
+		latitude  = a.getArrivee().getLat() ;
+
+		// Chaque segment est dessine'
+		for (int i = 0 ; i < a.getNbseg() ; i++) {
+			float delta_lon = (dis.readShort()) / 2.0E5f ;
+			float delta_lat = (dis.readShort()) / 2.0E5f ;
+			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
+			current_long += delta_lon ;
+			current_lat  += delta_lat ;
+		}
     
+		// Le dernier trait rejoint le sommet destination.
+		// On le dessine si le noeud destination est dans la zone du graphe courant.
+		if (succ_zone == numzone) {
+			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+    	
+    }
     public void dessiner_chemin(Chemin ch){
     	
     	
