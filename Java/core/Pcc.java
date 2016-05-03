@@ -71,29 +71,43 @@ public class Pcc extends Algo {
     	*/
     	//On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
     	while(lab_courant.getCourant() != this.destination || !this.tas.isEmpty()){
+    		
     		//On ajoute les suivants du noeud de cout le plus faible
     		for(Noeud suiv: noeuds.get(lab_courant.getCourant()).getSuiv()){
     			Label lab_suiv = new Label(suiv);
-    			lab_suiv.setPere(suiv);
+    			lab_suiv.setPere(lab_courant.getCourant());
     			//On calcule le cout du suivant
-    			double cout = this.tas.findMin().getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type) ;
+    			double cout = 0;
+    			switch(type){
+    			case "Temps" : 
+    				cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getTemps();
+    				break;
+    			case "Distance" :
+    				cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getLongueur() ;
+    			}
+    			//On met à jour le cout
+    			lab_suiv.updateCout(cout);
+    			//On ajoute le label dans le tas
+    			this.tas.insert(lab_suiv);
+    			//Afficher le noeud TODO
+    			this.tas.update(lab_suiv);
     			
-    			lab_suiv.updateCout(new_cout);
-    			this.tas.insert();
-    			this.tas.update();
-    			this.carte.put(suiv, new Label(suiv));
+    			
     		}
     		
-    		//On met à jour les couts en cherchant pour chaque noeud l'arrete la plus courte (mise à jour dans le tas) TODO
+    		
     		
     		
     		//On sort le sommet de cout faible (haut du tas), on met son label à jour dans la carte (HashMap)
     		lab_courant = this.tas.findMin();
-    		this.carte.put(noeuds.get(lab_courant.getCourant()), new Label(noeuds.get(lab_courant.getCourant())));
-    		
-    		
-    		lab_courant = this.tas.findMin();
+    		lab_courant.setMarquage(true);
+    		//Dessiner l'arrete TODO
+    		this.graphe.dessineArete(this.graphe.get_arete(lab_courant.getPere(), lab_courant .getCourant(), type));	
     		//quand on sort un label du tas, il passe à visité
+    		this.tas.deleteMin();
+    		//this.carte.put(noeuds.get(lab_courant.getCourant()), new Label(noeuds.get(lab_courant.getCourant())));
+    		this.carte.put(noeuds.get(lab_courant.getCourant()), lab_courant);
+    		lab_courant = this.tas.findMin();
     	}
     
     	
