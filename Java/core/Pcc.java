@@ -90,6 +90,8 @@ public class Pcc extends Algo {
     			//On ajoute le label dans le tas
     			this.tas.insert(lab_suiv);
     			//Afficher le noeud TODO
+    			this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 3);
+    			//
     			this.tas.update(lab_suiv);
     			
     			
