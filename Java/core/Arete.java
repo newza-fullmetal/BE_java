@@ -13,6 +13,10 @@ public class Arete {
 	/** La description de la route */
 	private Descripteur desc;
 	
+	private float Longueur ; // longueur de l'arrête 
+	
+	private int nbseg; // nombre de segments que compose l'arrête 
+	
 	
 	/** Le constructeur
 	 * 
@@ -32,6 +36,22 @@ public class Arete {
 			this.arrivee.addSuiv(a);
 		}
 	}
+	
+	public Arete(Noeud a, Noeud b, Descripteur desc, float longueur, int nbseg){
+		this.depart = a;
+		this.arrivee = b;
+		this.desc = desc;
+		this.depart.addSuiv(b);
+		this.Longueur= longueur; 
+		this.nbseg = nbseg;
+		
+		if(!desc.isSensUnique()){
+			this.depart.addSuiv(b);
+			this.arrivee.addSuiv(a);
+		}
+	}
+	
+	
 	/** Le constructeur 2 !!! A COMPLETER après avoir regardé un peu mieux les "DataInputStream"
 	 * 
 	 */
@@ -56,4 +76,8 @@ public class Arete {
 	public Noeud getArrivee(){return this.arrivee;}
 	
 	public Descripteur getDescripteur(){return this.desc;}
+	
+	public float getLongueur() {return this.Longueur;} 
+	
+	public float getVitesse() { return this.desc.vitesseMax();};
 }
