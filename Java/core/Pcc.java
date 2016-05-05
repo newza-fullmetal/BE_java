@@ -80,7 +80,7 @@ public class Pcc extends Algo {
     			double cout = 0;
     			switch(type){
     			case "Temps" : 
-    				cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getTemps();
+    				//cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getTemps();
     				break;
     			case "Distance" :
     				cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getLongueur() ;
@@ -104,7 +104,7 @@ public class Pcc extends Algo {
     		lab_courant = this.tas.findMin();
     		lab_courant.setMarquage(true);
     		//Dessiner l'arrete TODO
-    		this.graphe.dessineArete(this.graphe.get_arete(lab_courant.getPere(), lab_courant .getCourant(), type));	
+    		//this.graphe.dessineArete(this.graphe.get_arete(lab_courant.getPere(), lab_courant .getCourant(), type));	
     		//quand on sort un label du tas, il passe à visité
     		this.tas.deleteMin();
     		//this.carte.put(noeuds.get(lab_courant.getCourant()), new Label(noeuds.get(lab_courant.getCourant())));
@@ -120,6 +120,7 @@ public class Pcc extends Algo {
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
 	// A vous d'implementer la recherche de plus court chemin.
+	dijkstra("Distance");
     }
 
 }

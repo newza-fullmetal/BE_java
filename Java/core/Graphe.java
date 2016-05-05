@@ -260,8 +260,10 @@ public class Graphe {
     /**
      *  Récupère une arête avec deux noeuds en paramètre
      *  
-     *    
-    */
+     * @param a Noeud 1
+     * @param b Noeud 2
+     * @return L'arrete la plus courte ou null si elle n'existe pas
+     */
     //retourne l'arrête la plus courte en temps ou en distance 
     public Arete get_arete(int a, int b, String param) {
     	int ind=0; 
@@ -304,6 +306,12 @@ public class Graphe {
     
  
     // marche que pour les piétons 
+    /**
+     * 
+     * @param a Noeud 1
+     * @param b Noeud 2
+     * @return L'arrete la plus courte ou null si elle n'existe pas
+     */
     public Arete get_arete(int a, int b) {
     	int ind=0; 
     	int id_arrête = -1;  
@@ -429,6 +437,7 @@ public class Graphe {
 		// On le dessine si le noeud destination est dans la zone du graphe courant.
 		if (succ_zone == numzone) {
 			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+		}
     	
     }
     public void dessiner_chemin(Chemin ch){
