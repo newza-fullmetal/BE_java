@@ -29,10 +29,8 @@ public class Arete {
 		this.depart = a;
 		this.arrivee = b;
 		this.desc = desc;
-		if(!a.getSuiv().contains(b)){
-			this.depart.addSuiv(b);
-		}
-		if((!desc.isSensUnique()) && !(b.getSuiv().contains(a))){
+		this.depart.addSuiv(b);
+		if(!desc.isSensUnique()){
 			this.depart.addSuiv(b);
 			this.arrivee.addSuiv(a);
 		}
@@ -42,13 +40,11 @@ public class Arete {
 		this.depart = a;
 		this.arrivee = b;
 		this.desc = desc;
-		if(!a.getSuiv().contains(b)){
-			this.depart.addSuiv(b);
-		}
+		this.depart.addSuiv(b);
 		this.Longueur= longueur; 
 		this.nbseg = nbseg;
 		
-		if(!(desc.isSensUnique()) && !(b.getSuiv().contains(a))){
+		if(!desc.isSensUnique()){
 			this.depart.addSuiv(b);
 			this.arrivee.addSuiv(a);
 		}
