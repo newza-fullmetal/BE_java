@@ -112,8 +112,13 @@ public class Label implements Comparable<Label>{
 	public int compareTo(Label lab){
 		//on utilise la méthode de comparaison des doubles
 		Double d = new Double(this.getCout());
+		//Ligne de débeug
+		//System.out.println("Comparaison de "+lab.getCout()+ " et de "+d +" donne "+d.compareTo(new Double(lab.getCout())));
 		return d.compareTo(new Double(lab.getCout()));
 		
+	}
+	public String toString(){
+		return "Id : "+this.getCourant()+" cout : "+this.getCout()+" visité : "+this.is_fixed();
 	}
 	
 }

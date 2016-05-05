@@ -36,7 +36,11 @@ public class Noeud {
 	 * @param n le noeud à ajouter
 	 */
 	public void addSuiv(Noeud n){
-		this.suiv.add(n);
+		if(this.suiv.contains(n)){
+			System.out.println("Ce noeud ("+n.getId()+") est déjà dans les suivants du noeud "+this.id);
+		}else{
+			this.suiv.add(n);
+		}
 	}
 	
 	
@@ -53,7 +57,7 @@ public class Noeud {
 	
 	@Override
 	public String toString() {
-		return "Noeud [id=" + this.id + ", lat=" + this.lat + ", lon=" + this.lon + ", suiv=" + this.suiv + "]";
+		return "Noeud [id=" + this.id + ", lat=" + this.lat + ", lon=" + this.lon + "]";//suiv=" + this.suiv + "]";
 	}
 
 	/**

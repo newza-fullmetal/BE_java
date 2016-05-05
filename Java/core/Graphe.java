@@ -411,8 +411,8 @@ public class Graphe {
     	}
     	return moy/nbNoeuds;
     }
-    
-    public void dessiner_arete(Arete a) {
+    //TODO
+    /*public void dessiner_arete(Arete a) {
     	
     	float longitude =0; 
     	float latitude = 0; 
@@ -439,7 +439,7 @@ public class Graphe {
 			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
 		}
     	
-    }
+    }*/
     public void dessiner_chemin(Chemin ch){
     	
     	
