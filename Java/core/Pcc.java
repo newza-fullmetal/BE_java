@@ -1,5 +1,6 @@
 package core ;
 
+import java.awt.Color;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,12 +44,14 @@ public class Pcc extends Algo {
     /**
      * Première version de l'algorithme de Dijkstra
      * @param  param "Temps" ou "Distance"
+     * @return nombre max de noeuds dans le tas
      */
-    public void dijkstra(String type){
+    public int dijkstra(String type){
     	
+    	this.graphe.getDessin().setColor(Color.BLUE);
+    	int max_noeuds_in_tas = 0;
     	//On récupère les noeuds du graphe
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
-    	
     	noeuds = this.graphe.getNoeuds();
     	
     	//On remplit la HashMap
@@ -56,7 +59,7 @@ public class Pcc extends Algo {
     		Label lab = new Label(n);
     		this.carte.put(n, lab);
     	}
-    	System.out.println("La HashMap : " + this.carte.toString());
+    	//System.out.println("La HashMap : " + this.carte.toString());
     	//On remplit le premier noeud
     	Label lab_courant = this.carte.get(noeuds.get(this.origine));
     	lab_courant.updateCout(0);
@@ -68,7 +71,6 @@ public class Pcc extends Algo {
     	
     	this.tas.insert(lab_courant);
     	this.tas.update(lab_courant);
-    	
     	//System.out.println(noeuds.get(lab_courant.getCourant()).getSuiv());
     	
     	//On ajoute les suivants de l'origine dans le tas
@@ -96,9 +98,9 @@ public class Pcc extends Algo {
     			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
     		}
     	}
-    	
-    	System.out.println("Le tas trié : \n");
-    	this.tas.printSorted();
+    	max_noeuds_in_tas = this.tas.size();
+    	//System.out.println("Le tas trié : \n");
+    	//this.tas.printSorted();
     	
     	//Penser à sortir le noeud de départ du tas TODO
     	
@@ -138,7 +140,7 @@ public class Pcc extends Algo {
     	    			this.tas.insert(lab_suiv);
     	    			this.tas.update(lab_suiv);
     	    			
-    	    			this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 13);
+    	    			this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
         				
     	    			
     	    		}else{
@@ -151,7 +153,10 @@ public class Pcc extends Algo {
     			//Les suivants ont été ajoutés
     			
     		}else{
-    			System.out.println("Le noeud " + lab_courant.getCourant() + " a déjà été visité !");
+    			//System.out.println("Le noeud " + lab_courant.getCourant() + " a déjà été visité !");
+    		}
+    		if(max_noeuds_in_tas < this.tas.size()){
+    			max_noeuds_in_tas = this.tas.size();
     		}
     		//On sort le min du tas
     		this.tas.deleteMin();
@@ -159,92 +164,14 @@ public class Pcc extends Algo {
     	/*
     	 * Fin du parcours du graphe
     	 */
-    	
-
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	/*On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
-    	--
-    	  On ajoute les suivants du noeud de cout le plus faible
-    	  On met à jour les couts en cherchant pour chaque noeud l'arrete la plus courte (mise à jour dans le tas)
-    	  On sort le sommet de cout faible (haut du tas), on met son label à jour dans la carte (HashMap)
-    	  On update le tas.
-    	--
-    	*/
-    	//On cherche tant que la destination n'est pas atteinte ou que le tas n'est pas vide
-    	/*while(lab_courant.getCourant() != this.destination || !this.tas.isEmpty()){
-    		this.tas.printSorted();
-    		//On ajoute les suivants du noeud de cout le plus faible
-    		for(Noeud suiv: noeuds.get(lab_courant.getCourant()).getSuiv()){
-    			//Uniquement si le sommet n'a pas déjà été visité
-    			if(!this.carte.get(suiv).is_fixed()){
-    				Label lab_suiv = new Label(suiv);
-    				lab_suiv.setPere(lab_courant.getCourant());
-    				//On calcule le cout du suivant
-    				double cout = 0;
-    				switch(type){
-    				case "Temps" : 
-    					//cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getTemps();
-    					break;
-    				case "Distance" :
-    					if(this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type) == null){
-    						System.out.println("il n'y a pas d'arrete");
-    					}else{    					
-    						cout = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(), suiv.getId(), type).getLongueur() ;
-    					}
-    					break;
-    				
-    				}
-    				//On met à jour le cout
-    				lab_suiv.updateCout(cout);
-    				System.out.println("On ajoute le label dans le tas : id = "+lab_suiv.getCourant()+ ", cout = " + lab_suiv.getCout());
-    				//On ajoute le label dans le tas
-    				this.tas.insert(lab_suiv);
-    				//Afficher le noeud TODO
-    				this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 3);
-    				//
-    				this.tas.update(lab_suiv);
-    			
-    			}else{
-    				System.out.println("Le noeud "+suiv.getId()+" a déjà été visité");
-    			}
-    		}
-    		
-    		
-    		
-    		
-    		//On sort le sommet de cout faible (haut du tas), on met son label à jour dans la carte (HashMap)
-    		lab_courant = this.tas.findMin();
-    		lab_courant.setMarquage(true);
-    		//Dessiner l'arrete TODO
-    		//this.graphe.dessineArete(this.graphe.get_arete(lab_courant.getPere(), lab_courant .getCourant(), type));	
-    		//quand on sort un label du tas, il passe à visité
-    		this.tas.deleteMin();
-    		//this.carte.put(noeuds.get(lab_courant.getCourant()), new Label(noeuds.get(lab_courant.getCourant())));
-    		this.carte.put(noeuds.get(lab_courant.getCourant()), lab_courant);
-    		lab_courant = this.tas.findMin();
-    	}
-    
-    	
-    	
-    	*/
-    	
+    	return max_noeuds_in_tas;
     }
     public void run() {
 
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
 	// A vous d'implementer la recherche de plus court chemin.
-	dijkstra("Distance");
+	System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
     }
 
 }

@@ -37,7 +37,7 @@ public class Noeud {
 	 */
 	public void addSuiv(Noeud n){
 		if(this.suiv.contains(n)){
-			System.out.println("Ce noeud ("+n.getId()+") est déjà dans les suivants du noeud "+this.id);
+			//System.out.println("Ce noeud ("+n.getId()+") est déjà dans les suivants du noeud "+this.id);
 		}else{
 			this.suiv.add(n);
 		}
