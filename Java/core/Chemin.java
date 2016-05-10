@@ -24,8 +24,8 @@ public class Chemin {
 			
 			
 		}
-		/*
-		 * Calcule la longueur en distance du chemin
+		/**
+		 * Calcule la @return longueur en distance du chemin
 		 */
 		public double cout_distance(){
 			double dist=0;
@@ -36,7 +36,7 @@ public class Chemin {
 		}
 		
 		/**
-		 * Calcule la durée en temps du chemin
+		 * Calcule la @return durée en temps du chemin
 		 */
 		public double cout_temps(){
 			double duree = 0;			
@@ -89,5 +89,7 @@ public class Chemin {
 			}
 			return this.Temps;
 		}
+		
+		
 		
 }

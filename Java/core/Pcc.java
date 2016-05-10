@@ -49,6 +49,8 @@ public class Pcc extends Algo {
     public int dijkstra(String type){
     	
     	this.graphe.getDessin().setColor(Color.BLUE);
+    	//Chemin(int version, int magicnumber, int ID_map, int NB_noeud )
+    	Chemin itineraire = new Chemin(1, 1, 1, 0);
     	int max_noeuds_in_tas = 0;
     	//On récupère les noeuds du graphe
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
@@ -164,6 +166,17 @@ public class Pcc extends Algo {
     	/*
     	 * Fin du parcours du graphe
     	 */
+    	
+    	//On remplit le chemin
+    	lab_courant = this.carte.get(this.destination);
+    	do{
+    		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
+    		lab_courant = this.carte.get(lab_courant.getPere());
+    	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
+    	//On sort quand on est revenu au départ ou s'il y a une erreur...
+    	//Affichage du chemin...
+    	
+    	
     	return max_noeuds_in_tas;
     }
     public void run() {
