@@ -23,10 +23,18 @@ public class Label implements Comparable<Label>{
 	private double cout;
 	
 	/**
+	 * L'estimation "à vol d'oiseau" entre le sommet et la destination
+	 * Initialisé à 0
+	 * @see Label#Label(Noeud) 
+	 */
+	
+	private double estimation;
+	/**
 	 * L'id du sommet précédent sur le plus court chemin courant
 	 * @see Label#setPere()
 	 * @see Label#getPere()
 	 */
+	
 	private int id_pere;
 	
 	/**
@@ -47,6 +55,7 @@ public class Label implements Comparable<Label>{
 		this.cout = Double.POSITIVE_INFINITY;
 		this.id_pere = -1;
 		this.id_sommet_courant = noeud.getId();
+		this.estimation = 0;
 	}
 	
 	/**
@@ -76,6 +85,20 @@ public class Label implements Comparable<Label>{
 	 * @return le cout du chemin le plus court depuis l'origine vers ce sommet
 	 */
 	public double getCout(){ return this.cout;}
+	
+	/**
+	 * Met à jour l'estimation pour aller de ce sommet à la destination "à vol d'oiseau"
+	 * @param est La nouvelle estimation
+	 */
+	public void updateEstimation(double est){
+		this.estimation = est;
+	}
+	
+	/**
+	 * Donne l'estimation de distance "à vol d'oiseau" de ce sommet vers la destination
+	 * @return
+	 */
+	public double getEstimation(){return this.estimation;}
 	
 	/**
 	 * Définit le sommet précédent sur le chemin à partir d'un noeud

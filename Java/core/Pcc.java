@@ -180,6 +180,8 @@ public class Pcc extends Algo {
     	//On sort quand on est revenu au départ ou s'il y a une erreur...
     	//Affichage du chemin...
     	System.out.println(itineraire.toString());
+    	//Affichage du cout... NOPE car manque les arretes !!! TODO
+    	System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "\n en Temps ->" + itineraire.get_Temps());
     	
     	return max_noeuds_in_tas;
     }
