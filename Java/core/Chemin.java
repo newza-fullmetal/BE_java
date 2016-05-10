@@ -90,6 +90,12 @@ public class Chemin {
 			return this.Temps;
 		}
 		
-		
+		public String toString(){
+			String ch = "Voici le chemin : \n";
+			for(Noeud n : this.List_noeuds){
+				ch += " " + n.getId() + "\n";
+			}
+			return ch;
+		}
 		
 }

@@ -166,16 +166,20 @@ public class Pcc extends Algo {
     	/*
     	 * Fin du parcours du graphe
     	 */
-    	
+    	System.out.println("Fin du parcours");
     	//On remplit le chemin
-    	lab_courant = this.carte.get(this.destination);
+    	lab_courant = this.carte.get(noeuds.get(this.destination));
+		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
+
     	do{
+    		lab_courant = this.carte.get(noeuds.get(lab_courant.getPere()));
+    		System.out.println("coucou "+lab_courant.getCourant());
     		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
-    		lab_courant = this.carte.get(lab_courant.getPere());
+    		
     	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
     	//On sort quand on est revenu au départ ou s'il y a une erreur...
     	//Affichage du chemin...
-    	
+    	System.out.println(itineraire.toString());
     	
     	return max_noeuds_in_tas;
     }
