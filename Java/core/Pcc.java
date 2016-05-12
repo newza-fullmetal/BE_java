@@ -199,7 +199,17 @@ public class Pcc extends Algo {
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
 	// A vous d'implementer la recherche de plus court chemin.
-	System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
+	try{
+		this.graphe.getNoeuds().get(this.origine);
+		this.graphe.getNoeuds().get(this.destination);
+	
+	}catch(Exception e){
+		System.out.println("Un des deux point donné n'existe pas... \n Hum, ou peut-être qu'aucun n'existe !");
+		System.out.println("A bientôt !");
+		System.exit(1);
+		
+	}
+		System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
     }
 
 }
