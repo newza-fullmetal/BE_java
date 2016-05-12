@@ -56,10 +56,12 @@ public class Pcc extends Algo {
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
     	noeuds = this.graphe.getNoeuds();
     	
+    	
+    	/////////////////////////////////////////////////////////////////////////////
     	//On remplit la HashMap
     	for(Noeud n : noeuds){
     		Label lab = new Label(n);
-    		lab.updateEstimation(Graphe.distance(n.getLon(), n.getLat(), noeuds.get(this.origine).getLon(), noeuds.get(this.origine).getLon()));
+    		//lab.updateEstimation(Graphe.distance(n.getLon(), n.getLat(), noeuds.get(this.origine).getLon(), noeuds.get(this.origine).getLon()));
     		this.carte.put(n, lab);
     	}
     	//System.out.println("La HashMap : " + this.carte.toString());
