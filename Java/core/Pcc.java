@@ -41,6 +41,18 @@ public class Pcc extends Algo {
 	
 	
     }
+    
+    public void remplirCarte(ArrayList<Noeud> noeuds){
+    	//On remplit la HashMap
+    	for(Noeud n : noeuds){
+    		Label lab = new Label(n);
+    		this.carte.put(n, lab);
+    	}
+    }
+    
+    
+    
+    
     /**
      * Première version de l'algorithme de Dijkstra
      * @param  param "Temps" ou "Distance"
@@ -56,14 +68,8 @@ public class Pcc extends Algo {
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
     	noeuds = this.graphe.getNoeuds();
     	
+    	this.remplirCarte(noeuds);
     	
-    	/////////////////////////////////////////////////////////////////////////////
-    	//On remplit la HashMap
-    	for(Noeud n : noeuds){
-    		Label lab = new Label(n);
-    		//lab.updateEstimation(Graphe.distance(n.getLon(), n.getLat(), noeuds.get(this.origine).getLon(), noeuds.get(this.origine).getLon()));
-    		this.carte.put(n, lab);
-    	}
     	//System.out.println("La HashMap : " + this.carte.toString());
     	//On remplit le premier noeud
     	Label lab_courant = this.carte.get(noeuds.get(this.origine));
