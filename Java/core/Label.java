@@ -23,13 +23,6 @@ public class Label implements Comparable<Label>{
 	private double cout;
 	
 	/**
-	 * L'estimation "à vol d'oiseau" entre le sommet et la destination
-	 * Initialisé à 0
-	 * @see Label#Label(Noeud) 
-	 */
-	
-	private double estimation;
-	/**
 	 * L'id du sommet précédent sur le plus court chemin courant
 	 * @see Label#setPere()
 	 * @see Label#getPere()
@@ -55,7 +48,6 @@ public class Label implements Comparable<Label>{
 		this.cout = Double.POSITIVE_INFINITY;
 		this.id_pere = -1;
 		this.id_sommet_courant = noeud.getId();
-		this.estimation = 0;
 	}
 	
 	/**
@@ -90,15 +82,13 @@ public class Label implements Comparable<Label>{
 	 * Met à jour l'estimation pour aller de ce sommet à la destination "à vol d'oiseau"
 	 * @param est La nouvelle estimation
 	 */
-	public void updateEstimation(double est){
-		this.estimation = est;
-	}
+	public void updateEstimation(double dest){}
 	
 	/**
 	 * Donne l'estimation de distance "à vol d'oiseau" de ce sommet vers la destination
 	 * @return
 	 */
-	public double getEstimation(){return this.estimation;}
+	public double getEstimation(){return 0;}
 	
 	/**
 	 * Définit le sommet précédent sur le chemin à partir d'un noeud
@@ -130,7 +120,8 @@ public class Label implements Comparable<Label>{
 	 * Permet de comparer deux labels
 	 * @param lab le deuxième label à comparer
 	 * @return 0 si les labels sont égaux en cout
-	 * 
+	 * 		   1 this plus grand que lab
+	 *        -1 this plus petit que lab
 	 */
 	public int compareTo(Label lab){
 		//on utilise la méthode de comparaison des doubles
