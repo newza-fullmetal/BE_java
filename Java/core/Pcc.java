@@ -135,7 +135,15 @@ public class Pcc extends Algo {
     				Label lab_suiv = new Label(suiv);
     	    		double cout_suiv = 0;
     	    		//On cherche le cout
+    	    		long d = 0;
+
+    	    		
+
+    	    		d = System.currentTimeMillis();
     	    		Arete a = this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant());
+    	    		d = System.currentTimeMillis() - d;
+    	    		System.out.println("Le get_arete dure : " + d + "ms.");
+    	    		//Thread.sleep(2000);
     	    		if(a != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
     	    			//System.out.println("\n" + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
@@ -175,7 +183,7 @@ public class Pcc extends Algo {
     		}
     		this.graphe.getDessin().setColor(Color.GREEN);
     		//On sort le min du tas
-    		this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
+    		//this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
 			
     		this.tas.deleteMin();
     	}
@@ -220,7 +228,11 @@ public class Pcc extends Algo {
 		System.exit(1);
 		
 	}
+		long d = 0;
+		d = System.currentTimeMillis();
 		System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
+		d = System.currentTimeMillis() - d;
+		System.out.println("Temps d'exécution de l'algo : " + d + "ms");
     }
 
 }
