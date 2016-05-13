@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ArrayList;
+
 import base.Descripteur;
 
 public class Arete {
@@ -16,6 +18,14 @@ public class Arete {
 	private float Longueur ; // longueur de l'arrête 
 	
 	private int nbseg; // nombre de segments que compose l'arrête 
+	
+	private ArrayList<Float> List_deltalong; //valeurs des longitudes des arrêtes (pour le dessin) 
+	
+	private ArrayList<Float> List_deltalat; // pareil pour les latitudes
+	
+	private int num_zone; // numéro de la zone de la carte. 
+	
+	
 	
 	
 	/** Le constructeur
@@ -36,13 +46,16 @@ public class Arete {
 		}
 	}
 	
-	public Arete(Noeud a, Noeud b, Descripteur desc, float longueur, int nbseg){
+	public Arete(Noeud a, Noeud b, Descripteur desc, float longueur, int nbseg, ArrayList<Float> lon, ArrayList<Float> lat){
 		this.depart = a;
 		this.arrivee = b;
 		this.desc = desc;
 		this.depart.addSuiv(b);
 		this.Longueur= longueur; 
 		this.nbseg = nbseg;
+		this.List_deltalat = lat;
+		this.List_deltalong = lon;
+		this.num_zone = num_zone; 
 		
 		if(!desc.isSensUnique()){
 			this.depart.addSuiv(b);
@@ -83,4 +96,8 @@ public class Arete {
 	public double getTemps() {return 1.0/(this.desc.vitesseMax()  * 1000.0 / 60.0 ) * this.Longueur ; }
 	
 	public int getNbseg() { return this.nbseg; }
+	
+	public float getdeltalong(int a) {return this.List_deltalong.get(a); }
+	
+	public float getdeltalat(int a) {return this.List_deltalat.get(a); }
 }

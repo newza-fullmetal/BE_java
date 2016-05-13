@@ -159,11 +159,16 @@ public class Graphe {
 	    		float current_lat  = noeuds.get(num_node).getLat() ;
 	    		longitude = noeuds.get(dest_node).getLon() ;
 	    		latitude  = noeuds.get(dest_node).getLat() ;
+	    		
+	    		ArrayList<Float> deltalong = new ArrayList<Float>() ; 
+	    		ArrayList<Float> deltalat = new ArrayList<Float>() ; 
 
 	    		// Chaque segment est dessine'
 	    		for (int i = 0 ; i < nb_segm ; i++) {
 	    			float delta_lon = (dis.readShort()) / 2.0E5f ;
+	    			deltalong.add(delta_lon);
 	    			float delta_lat = (dis.readShort()) / 2.0E5f ;
+	    			deltalat.add(delta_lat);
 	    			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
 	    			current_long += delta_lon ;
 	    			current_lat  += delta_lat ;
@@ -175,7 +180,7 @@ public class Graphe {
 	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
 	    			
 	    			//On ajoute l'arete à la liste des routes
-		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm));
+		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm,deltalong,deltalat));
 		    		
 		    		//L'ajout des successeurs se fait à la création de l'arrete	
 		    		//noeuds.get(num_node).succToString();
@@ -411,8 +416,8 @@ public class Graphe {
     	}
     	return moy/nbNoeuds;
     }
-    //TODO
-    /*public void dessiner_arete(Arete a) {
+    //dessine une arrete de manière précise, en ajoutant les segments 
+    public void dessiner_arete(Arete a) {
     	
     	float longitude =0; 
     	float latitude = 0; 
@@ -426,8 +431,8 @@ public class Graphe {
 
 		// Chaque segment est dessine'
 		for (int i = 0 ; i < a.getNbseg() ; i++) {
-			float delta_lon = (dis.readShort()) / 2.0E5f ;
-			float delta_lat = (dis.readShort()) / 2.0E5f ;
+			float delta_lon = a.getdeltalong(i); 
+			float delta_lat = a.getdeltalat(i); 
 			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
 			current_long += delta_lon ;
 			current_lat  += delta_lat ;
@@ -435,11 +440,12 @@ public class Graphe {
     
 		// Le dernier trait rejoint le sommet destination.
 		// On le dessine si le noeud destination est dans la zone du graphe courant.
-		if (succ_zone == numzone) {
-			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
-		}
+//		if (succ_zone == numzone) {
+//			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+//		}
+		dessin.drawLine(current_long, current_lat, longitude, latitude) ;
     	
-    }*/
+    }
     public void dessiner_chemin(Chemin ch){
     	
     	
@@ -447,7 +453,8 @@ public class Graphe {
 	   
     	for(Arete a : ch.List_Arete){
     		if (a!=null) {
-    				dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat()) ;
+    				//dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat()) ;
+    				dessiner_arete(a); // <----- plus précis !! 
     		}
     	}    	
     	
