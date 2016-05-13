@@ -88,14 +88,14 @@ public class Pcc extends Algo {
     	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
     		Label lab_suiv = new Label(suiv);
     		double cout_suiv = 0;
-    		if(this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()) != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    		if(this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type) != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
     			
     			switch(type){
 				case "Temps" : 
-					cout_suiv = this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).getTemps();//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getTemps();//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
 	    			break;
 				case "Distance" :
-					cout_suiv = this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).getLongueur();//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getLongueur();//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
 					break;
 				
 				}
@@ -105,8 +105,8 @@ public class Pcc extends Algo {
     			this.tas.insert(lab_suiv);
     			this.tas.update(lab_suiv);
     		}else{
-    			System.out.println("Des beugs ! "+this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()));
-    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
+    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
+    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
     		}
     	}
     	
@@ -140,15 +140,15 @@ public class Pcc extends Algo {
     	    		
 
     	    		d = System.currentTimeMillis();
-    	    		Arete a = this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant());
+    	    		Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type);
     	    		d = System.currentTimeMillis() - d;
-    	    		System.out.println("Le get_arete dure : " + d + "ms.");
+    	    		//System.out.println("Le New_get_arete dure : " + d + "ms.");
     	    		//Thread.sleep(2000);
     	    		if(a != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
-    	    			//System.out.println("\n" + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
+    	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
     					case "Temps" : 
-    						//cout_suiv = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant(), "Temps").getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    						//cout_suiv = lab_courant.getCout() + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(), "Temps").getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
     		    			break;
     					case "Distance" :
     						cout_suiv = lab_courant.getCout() + a.getLongueur(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
@@ -166,8 +166,8 @@ public class Pcc extends Algo {
         				
     	    			
     	    		}else{
-    	    			System.out.println("Des beugs ! "+this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()));
-    	    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
+    	    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
+    	    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
     	    		}
     	    		
     	    		

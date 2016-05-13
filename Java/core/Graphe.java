@@ -274,41 +274,37 @@ public class Graphe {
      */
     //retourne l'arrête la plus courte en temps ou en distance 
     public Arete New_get_arete(int a, int b, String param) {
-    	int ind=0; 
-    	int id_arrête = -1;  
+    	Arete best_arete = null;  
     	double temps_min = 10000f; 
     	float distance_min= 10000f;
     	for (Arete x : noeuds.get(a).getList_arete() )  {
-    		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
-    			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) && (this.routes.get(ind).getDescripteur().isSensUnique())) {
+    		if ( ( b== x.getArrivee().getId()) 
+    			||((b == x.getDepart().getId()) && !(x.getDescripteur().isSensUnique()))) {
     			switch (param) {
     			case "Temps" : 
-    				if (this.routes.get(ind).getTemps()< temps_min );
+    				if (x.getTemps()< temps_min );
     				{
-    					temps_min = this.routes.get(ind).getTemps(); 
-    					id_arrête = ind; 
+    					temps_min = x.getTemps(); 
+    					best_arete =x; 
     				}
     				break;
     			case "Distance" :
-    				if (this.routes.get(ind).getLongueur()< distance_min );
+    				if (x.getLongueur()< distance_min );
     				{
-    					distance_min = this.routes.get(ind).getLongueur(); 
-    					id_arrête = ind; 
+    					distance_min = x.getLongueur(); 
+    					best_arete =x; 
     				}
     				break;
     				
     			default : 
-    				id_arrête = ind;
+    				best_arete =x; 
     				break;    				
     			}
     		
     		}
     	}
-    	if (id_arrête == -1) {
-    		// il n'existe aucune arrête liant les deux noeuds
-    		return null; 
-    	}
-    	return this.routes.get(id_arrête); 
+    	
+    	return best_arete; 
     	
     }
     public Arete get_arete(int a, int b, String param) {
@@ -423,7 +419,7 @@ public class Graphe {
 		current_zone = dis.readUnsignedByte() ;
 		current_node = Utils.read24bits(dis) ;
 		if (i!=0) { // on n'ajoute pas d'arrêtes au premier passage car pas de noeuds. 
-			chemin.add_arete(this.get_arete(chemin.get_lastnode().getId(), current_node));
+			chemin.add_arete(this.New_get_arete(chemin.get_lastnode().getId(), current_node,"Temps"));
 		}
 		chemin.add_noeud(this.noeuds.get(current_node));
 		
