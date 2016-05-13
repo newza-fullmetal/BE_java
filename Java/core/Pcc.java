@@ -69,7 +69,7 @@ public class Pcc extends Algo {
     	noeuds = this.graphe.getNoeuds();
     	
     	this.remplirCarte(noeuds);
-    	
+    	System.out.println("La HASHMAP est OK !!! ");
     	//System.out.println("La HashMap : " + this.carte.toString());
     	//On remplit le premier noeud
     	Label lab_courant = this.carte.get(noeuds.get(this.origine));
@@ -109,6 +109,8 @@ public class Pcc extends Algo {
     			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
     		}
     	}
+    	
+    	System.out.println("Les suivants de l'origine OK");
     	max_noeuds_in_tas = this.tas.size();
     	//System.out.println("Le tas trié : \n");
     	//this.tas.printSorted();
@@ -133,14 +135,15 @@ public class Pcc extends Algo {
     				Label lab_suiv = new Label(suiv);
     	    		double cout_suiv = 0;
     	    		//On cherche le cout
-    	    		if(this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()) != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
-    	    			
+    	    		Arete a = this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant());
+    	    		if(a != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    	    			//System.out.println("\n" + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
     					case "Temps" : 
-    						cout_suiv = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    						//cout_suiv = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant(), "Temps").getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
     		    			break;
     					case "Distance" :
-    						cout_suiv = lab_courant.getCout() + this.graphe.get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).getLongueur(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    						cout_suiv = lab_courant.getCout() + a.getLongueur(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
     						break;
     					
     					}
@@ -151,7 +154,7 @@ public class Pcc extends Algo {
     	    			this.tas.insert(lab_suiv);
     	    			this.tas.update(lab_suiv);
     	    			
-    	    			this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
+    	    			//this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
         				
     	    			
     	    		}else{
@@ -162,6 +165,7 @@ public class Pcc extends Algo {
     	    		
     			}
     			//Les suivants ont été ajoutés
+    			//System.out.println("Les suivs");
     			
     		}else{
     			//System.out.println("Le noeud " + lab_courant.getCourant() + " a déjà été visité !");
@@ -169,7 +173,10 @@ public class Pcc extends Algo {
     		if(max_noeuds_in_tas < this.tas.size()){
     			max_noeuds_in_tas = this.tas.size();
     		}
+    		this.graphe.getDessin().setColor(Color.GREEN);
     		//On sort le min du tas
+    		this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
+			
     		this.tas.deleteMin();
     	}
     	/*
@@ -186,6 +193,10 @@ public class Pcc extends Algo {
     		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
     		
     	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
+    	
+    	for(Noeud n: itineraire.get_listnode()){
+    		this.graphe.getDessin().drawPoint(n.getLon(), n.getLat(), 5);
+    	}
     	//On sort quand on est revenu au départ ou s'il y a une erreur...
     	//Affichage du chemin...
     	System.out.println(itineraire.toString());
