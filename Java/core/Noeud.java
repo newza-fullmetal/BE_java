@@ -17,6 +17,7 @@ public class Noeud {
 	/** La liste des successeurs */
 	private ArrayList<Noeud> suiv;
 	
+	private ArrayList<Arete> List_arete; 
 	/**
 	 * Le constructeur
 	 * @param id l'id du noeud à créer
@@ -28,6 +29,7 @@ public class Noeud {
 		this.lon = lon;
 		this.suiv = new ArrayList<Noeud>();
 		this.id = id;
+		this.List_arete= new ArrayList<Arete>(); 
 		
 	}
 	
@@ -90,6 +92,11 @@ public class Noeud {
 	public int getNbSuiv(){
 		return this.suiv.size();
 	}
+	
+	public void addArete(Arete a) {this.List_arete.add(a);}
+	
+	public ArrayList<Arete> getList_arete() {return this.List_arete ;} 
+	
 	
 	
 }

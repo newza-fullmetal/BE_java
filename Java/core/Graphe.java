@@ -125,8 +125,9 @@ public class Graphe {
 	    	descripteurs[num_descr] = new Descripteur(dis) ;
 
 	    	// On affiche quelques descripteurs parmi tous.
-	    	if (0 == num_descr % (1 + nb_descripteurs / 400))
-	    		System.out.println("Descripteur " + num_descr + " = " + descripteurs[num_descr]) ;
+	    	if (0 == num_descr % (1 + nb_descripteurs / 400)){
+	    		//System.out.println("Descripteur " + num_descr + " = " + descripteurs[num_descr]) ;
+	    	}
 	    }
 	    
 	    Utils.checkByte(254, dis) ;
@@ -180,8 +181,10 @@ public class Graphe {
 	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
 	    			
 	    			//On ajoute l'arete à la liste des routes
-		    		routes.add(new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm,deltalong,deltalat));
-		    		
+	    			Arete a = new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm,deltalong,deltalat);
+		    		routes.add(a);
+	    			noeuds.get(num_node).addArete(a);
+	    			noeuds.get(dest_node).addArete(a); 			
 		    		//L'ajout des successeurs se fait à la création de l'arrete	
 		    		//noeuds.get(num_node).succToString();
 		    	}
@@ -270,6 +273,44 @@ public class Graphe {
      * @return L'arrete la plus courte ou null si elle n'existe pas
      */
     //retourne l'arrête la plus courte en temps ou en distance 
+    public Arete New_get_arete(int a, int b, String param) {
+    	int ind=0; 
+    	int id_arrête = -1;  
+    	double temps_min = 10000f; 
+    	float distance_min= 10000f;
+    	for (Arete x : noeuds.get(a).getList_arete() )  {
+    		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
+    			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) && (this.routes.get(ind).getDescripteur().isSensUnique())) {
+    			switch (param) {
+    			case "Temps" : 
+    				if (this.routes.get(ind).getTemps()< temps_min );
+    				{
+    					temps_min = this.routes.get(ind).getTemps(); 
+    					id_arrête = ind; 
+    				}
+    				break;
+    			case "Distance" :
+    				if (this.routes.get(ind).getLongueur()< distance_min );
+    				{
+    					distance_min = this.routes.get(ind).getLongueur(); 
+    					id_arrête = ind; 
+    				}
+    				break;
+    				
+    			default : 
+    				id_arrête = ind;
+    				break;    				
+    			}
+    		
+    		}
+    	}
+    	if (id_arrête == -1) {
+    		// il n'existe aucune arrête liant les deux noeuds
+    		return null; 
+    	}
+    	return this.routes.get(id_arrête); 
+    	
+    }
     public Arete get_arete(int a, int b, String param) {
     	int ind=0; 
     	int id_arrête = -1;  
@@ -296,8 +337,9 @@ public class Graphe {
     				
     			default : 
     				id_arrête = ind;
-    				
+    				break;    				
     			}
+    		
     		}
     	}
     	if (id_arrête == -1) {
@@ -319,6 +361,7 @@ public class Graphe {
      */
     public Arete get_arete(int a, int b) {
     	int ind=0; 
+    	
     	int id_arrête = -1;  
     	double temps_min = 10000f; 
     	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
