@@ -35,6 +35,12 @@ public class Label implements Comparable<Label>{
 	 */
 	private int id_sommet_courant;
 	
+	/**
+	 * L'arete associé entre ce noeud et le père. 
+	 */
+	
+	private Arete arete; 
+	
 	
 
 	/**
@@ -134,5 +140,18 @@ public class Label implements Comparable<Label>{
 	public String toString(){
 		return "Id : "+this.getCourant()+" cout : "+this.getCout()+" visité : "+this.is_fixed();
 	}
+	
+	/**
+	 * Définie l'arête associé au PCC vers ce noeud
+	 * @param a
+	 */
+	public void setArete(Arete a) {this.arete = a ;}
+	
+	/**
+	 * Renvoie l'arrête du PCC entre le père et ce noeud pour calcul
+	 * @return
+	 */
+	
+	public Arete getArete() {return this.arete;}
 	
 }

@@ -182,7 +182,7 @@ public class Graphe {
 	    			
 	    			//On ajoute l'arete à la liste des routes
 	    			Arete a = new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm,deltalong,deltalat);
-		    		routes.add(a);
+		    		//routes.add(a);
 	    			noeuds.get(num_node).addArete(a);
 	    			noeuds.get(dest_node).addArete(a); 			
 		    		//L'ajout des successeurs se fait à la création de l'arrete	

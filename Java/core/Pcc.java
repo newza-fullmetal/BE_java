@@ -85,25 +85,58 @@ public class Pcc extends Algo {
     	//System.out.println(noeuds.get(lab_courant.getCourant()).getSuiv());
     	
     	//On ajoute les suivants de l'origine dans le tas
+//    	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
+//    		Label lab_suiv = new Label(suiv);
+//    		double cout_suiv = 0;
+//    		if(this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type) != null){
+//    			
+//    			switch(type){
+//				case "Temps" : 
+//					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getTemps();
+//	    			break;
+//				case "Distance" :
+//					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getLongueur();
+//					break;
+//				
+//				}
+//    			lab_suiv.updateCout(cout_suiv);
+//    			lab_suiv.setPere(lab_courant.getCourant());
+//    			
+//    			this.tas.insert(lab_suiv);
+//    			this.tas.update(lab_suiv);
+//    		}else{
+//    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
+//    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
+//    		}
+//    	}
+    	/** 
+    	 * TEST DE FONCTION OPTI + ajout de l'arête dans le label 
+    	 */
     	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
     		Label lab_suiv = new Label(suiv);
     		double cout_suiv = 0;
-    		if(this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type) != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
-    			
-    			switch(type){
-				case "Temps" : 
-					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getTemps();//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+			Arete a;
+			
+			a= this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type);
+			
+			if  (a != null) {
+				switch(type){
+				case "Temps" : 					
+					cout_suiv = a.getTemps();
 	    			break;
 				case "Distance" :
-					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getLongueur();//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+					cout_suiv = a.getLongueur();
 					break;
 				
 				}
-    			lab_suiv.updateCout(cout_suiv);
-    			lab_suiv.setPere(lab_courant.getCourant());
+				
+			lab_suiv.updateCout(cout_suiv);
+			lab_suiv.setPere(lab_courant.getCourant());
+			lab_suiv.setArete(a);
     			
     			this.tas.insert(lab_suiv);
     			this.tas.update(lab_suiv);
+    			
     		}else{
     			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
     			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
@@ -148,7 +181,7 @@ public class Pcc extends Algo {
     	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
     					case "Temps" : 
-    						//cout_suiv = lab_courant.getCout() + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(), "Temps").getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    						cout_suiv = lab_courant.getCout() +a.getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
     		    			break;
     					case "Distance" :
     						cout_suiv = lab_courant.getCout() + a.getLongueur(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
@@ -157,6 +190,7 @@ public class Pcc extends Algo {
     					}
     	    			lab_suiv.updateCout(cout_suiv);
     	    			lab_suiv.setPere(lab_courant.getCourant());
+    	    			lab_suiv.setArete(a);
     	    			
     	    			//On insère le suiv dans le tas (vérifier si le tas gère si le label est déjà dedans) TODO
     	    			this.tas.insert(lab_suiv);
@@ -181,9 +215,9 @@ public class Pcc extends Algo {
     		if(max_noeuds_in_tas < this.tas.size()){
     			max_noeuds_in_tas = this.tas.size();
     		}
-    		this.graphe.getDessin().setColor(Color.GREEN);
+    		this.graphe.getDessin().setColor(Color.MAGENTA);
     		//On sort le min du tas
-    		//this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
+    		this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 2);
 			
     		this.tas.deleteMin();
     	}
@@ -194,22 +228,23 @@ public class Pcc extends Algo {
     	//On remplit le chemin
     	lab_courant = this.carte.get(noeuds.get(this.destination));
 		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
+		
 
     	do{
+    		itineraire.add_arete(lab_courant.getArete());
     		lab_courant = this.carte.get(noeuds.get(lab_courant.getPere()));
-    		System.out.println("coucou "+lab_courant.getCourant());
+    		//System.out.println("coucou "+lab_courant.getCourant());
     		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
     		
+    		
     	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
-    	
-    	for(Noeud n: itineraire.get_listnode()){
-    		this.graphe.getDessin().drawPoint(n.getLon(), n.getLat(), 5);
-    	}
+    	this.graphe.getDessin().setColor(Color.GREEN);
+    	graphe.dessiner_chemin(itineraire);
     	//On sort quand on est revenu au départ ou s'il y a une erreur...
     	//Affichage du chemin...
-    	System.out.println(itineraire.toString());
-    	//Affichage du cout... NOPE car manque les arretes !!! TODO
-    	System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "\n en Temps ->" + itineraire.get_Temps());
+    	//System.out.println(itineraire.toString());
+    	//Affichage du cout... NOPE car manque les arretes !!! DONE
+    	System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
     	
     	return max_noeuds_in_tas;
     }

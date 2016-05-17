@@ -30,7 +30,8 @@ public class Chemin {
 		public double cout_distance(){
 			double dist=0;
 			for(Arete a : this.List_Arete){
-				dist += a.getLongueur(); 
+				if (a != null) { dist += a.getLongueur();}
+				else { System.out.println("arrête nulle");}
 			}
 			return dist;
 		}
@@ -46,7 +47,7 @@ public class Chemin {
 			else {
 				for(Arete a : this.List_Arete){
 					//exprimer le temps en minutes
-					System.out.println(a);
+//					/System.out.println(a);
 					if ( a!= null ) {					
 						duree += a.getTemps() ; 
 					}
