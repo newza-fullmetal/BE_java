@@ -20,6 +20,7 @@ public class Pcc extends Algo {
      * La carte qui permet d'associer un label à un noeud
      */
     protected HashMap<Noeud, Label> carte;
+    protected HashMap<Noeud, Label> carte2;
     
     /**
      * Le tas qui contient les noeuds visités
@@ -38,20 +39,11 @@ public class Pcc extends Algo {
 	
 	this.carte = new HashMap<Noeud, Label>();
 	this.tas = new BinaryHeap<Label>();
+	this.carte2 =  new HashMap<Noeud, Label>();
 	
 	
     }
-    
-    public void remplirCarte(ArrayList<Noeud> noeuds){
-    	//On remplit la HashMap
-    	for(Noeud n : noeuds){
-    		Label lab = new Label(n);
-    		this.carte.put(n, lab);
-    	}
-    }
-    
-    
-    
+       
     
     /**
      * Première version de l'algorithme de Dijkstra
@@ -68,11 +60,15 @@ public class Pcc extends Algo {
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
     	noeuds = this.graphe.getNoeuds();
     	
-    	this.remplirCarte(noeuds);
+    	// - >   this.remplirCarte(noeuds);
     	System.out.println("La HASHMAP est OK !!! ");
-    	//System.out.println("La HashMap : " + this.carte.toString());
-    	//On remplit le premier noeud
-    	Label lab_courant = this.carte.get(noeuds.get(this.origine));
+    	
+    	/////// On remplit le premier noeud ///////////////////
+    	Noeud N1 = noeuds.get(this.origine);
+    	Label lab = new Label (N1); 
+    	this.carte.put(N1, lab);
+    		
+    	Label lab_courant = this.carte.get(noeuds.get(this.origine));    	
     	lab_courant.updateCout(0);
     	lab_courant.setMarquage(true);
     	
@@ -83,37 +79,12 @@ public class Pcc extends Algo {
     	this.tas.insert(lab_courant);
     	this.tas.update(lab_courant);
     	//System.out.println(noeuds.get(lab_courant.getCourant()).getSuiv());
+
     	
     	//On ajoute les suivants de l'origine dans le tas
-//    	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
-//    		Label lab_suiv = new Label(suiv);
-//    		double cout_suiv = 0;
-//    		if(this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type) != null){
-//    			
-//    			switch(type){
-//				case "Temps" : 
-//					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getTemps();
-//	    			break;
-//				case "Distance" :
-//					cout_suiv = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type).getLongueur();
-//					break;
-//				
-//				}
-//    			lab_suiv.updateCout(cout_suiv);
-//    			lab_suiv.setPere(lab_courant.getCourant());
-//    			
-//    			this.tas.insert(lab_suiv);
-//    			this.tas.update(lab_suiv);
-//    		}else{
-//    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
-//    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
-//    		}
-//    	}
-    	/** 
-    	 * TEST DE FONCTION OPTI + ajout de l'arête dans le label 
-    	 */
     	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
     		Label lab_suiv = new Label(suiv);
+    		this.carte.put(suiv, lab_suiv);
     		double cout_suiv = 0;
 			Arete a;
 			
@@ -157,41 +128,44 @@ public class Pcc extends Algo {
     		
     		//Si ce sommet n'a pas été fixé...
     		if(!this.carte.get(noeud_courant).is_fixed()){
-    			
+    			//System.out.println("noeud non visité");
+    			   			
     			//On marque le noeud visité
     			lab_courant.setMarquage(true);
     			//On met à jour le noeud dans la HashMap (cout...)
+    			
     			this.carte.put(noeud_courant, lab_courant);
     			
     			//On ajoute les suivants du noeud dans le tas
     			for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
     				Label lab_suiv = new Label(suiv);
+    				//on vérifie si le noeud est déjà dans la carte
+    				if (!this.carte.containsKey(suiv)){
+    					this.carte.put(suiv, lab_suiv);
+    				}
     	    		double cout_suiv = 0;
     	    		//On cherche le cout
-    	    		long d = 0;
+    	    		 	    		
 
+    	    		Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type);
     	    		
-
-    	    		d = System.currentTimeMillis();
-    	    		Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type);
-    	    		d = System.currentTimeMillis() - d;
     	    		//System.out.println("Le New_get_arete dure : " + d + "ms.");
     	    		//Thread.sleep(2000);
-    	    		if(a != null){//Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    	    		if(a != null){
     	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
     					case "Temps" : 
-    						cout_suiv = lab_courant.getCout() +a.getTemps(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    						cout_suiv = lab_courant.getCout() +a.getTemps(); 
     		    			break;
     					case "Distance" :
-    						cout_suiv = lab_courant.getCout() + a.getLongueur(); //Remettre le parametre sur get_arrete après l'avoir corrigé TODO
+    						cout_suiv = lab_courant.getCout() + a.getLongueur(); 
     						break;
     					
     					}
+    	    
     	    			lab_suiv.updateCout(cout_suiv);
     	    			lab_suiv.setPere(lab_courant.getCourant());
     	    			lab_suiv.setArete(a);
-    	    			
     	    			//On insère le suiv dans le tas (vérifier si le tas gère si le label est déjà dedans) TODO
     	    			this.tas.insert(lab_suiv);
     	    			this.tas.update(lab_suiv);
@@ -200,10 +174,9 @@ public class Pcc extends Algo {
         				
     	    			
     	    		}else{
-    	    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
-    	    			System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
+    	    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type));
+    	    			//System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
     	    		}
-    	    		
     	    		
     			}
     			//Les suivants ont été ajoutés
