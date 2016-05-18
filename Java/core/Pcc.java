@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import base.Readarg ;
 
@@ -66,11 +67,9 @@ public class Pcc extends Algo {
     	
     	/////// On remplit le premier noeud ///////////////////
     	Noeud N1 = noeuds.get(this.origine);
-    	if(star){
-    		Label_A_Star lab = new Label_A_Star(N1);
-    	}
-    	Label lab = new Label (N1); 
+    	Label lab = (star) ? new Label_A_Star(N1) : new Label (N1);
     	this.carte.put(N1, lab);
+    	System.out.println("type : " + lab.getClass());
     		
     	Label lab_courant = this.carte.get(noeuds.get(this.origine));    	
     	lab_courant.updateCout(0);
@@ -237,8 +236,26 @@ public class Pcc extends Algo {
     
     public void run() {
 
+    int disttemps = 0;
+    Boolean go = false;
+    Scanner entree = new  Scanner(System.in);
+    
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
-
+	System.out.println("En distance : 0 |ou| En temps : 1 ...");
+	while(!go){
+		if (entree.hasNextInt()){
+			disttemps = entree.nextInt();
+			if(disttemps == 0 || disttemps == 1){
+				go = true;
+			}
+		}
+		//On refait un tour...
+		if (!go){
+			System.out.println("L'entrée n'est pas bonne !");
+			entree.next();
+		}
+		
+    }
 	
 	try{
 		this.graphe.getNoeuds().get(this.origine);
@@ -250,11 +267,21 @@ public class Pcc extends Algo {
 		System.exit(1);
 		
 	}
-		long d = 0;
-		d = System.currentTimeMillis();
-		System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
-		d = System.currentTimeMillis() - d;
-		System.out.println("Temps d'exécution de l'algo : " + d + "ms");
+		long exec_time = 0;
+		if (disttemps == 0){
+			
+			exec_time = System.currentTimeMillis();
+			System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
+			exec_time = System.currentTimeMillis() - exec_time;
+			System.out.println("Temps d'exécution de l'algo : " + exec_time + "ms");
+		}else{
+			
+			exec_time = System.currentTimeMillis();
+			System.out.println("Max noeuds dans le tas : " + dijkstra("Temps"));
+			exec_time = System.currentTimeMillis() - exec_time;
+			System.out.println("Temps d'exécution de l'algo : " + exec_time + "ms");
+		
+		}
     }
-
+    
 }
