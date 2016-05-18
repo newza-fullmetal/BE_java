@@ -39,7 +39,7 @@ public class Pcc extends Algo {
 	
 	this.carte = new HashMap<Noeud, Label>();
 	this.tas = new BinaryHeap<Label>();
-	this.carte2 =  new HashMap<Noeud, Label>();
+	
 	
 	
     }
@@ -48,15 +48,16 @@ public class Pcc extends Algo {
     /**
      * Première version de l'algorithme de Dijkstra
      * @param  param "Temps" ou "Distance"
+     * @param star false par défaut, true si on veut l'algo PccStar @see {@link Pcc#dijkstra(String)}
      * @return nombre max de noeuds dans le tas
      */
-    public int dijkstra(String type){
+    public int dijkstra(String type, Boolean star){
     	
     	this.graphe.getDessin().setColor(Color.BLUE);
     	//Chemin(int version, int magicnumber, int ID_map, int NB_noeud )
     	Chemin itineraire = new Chemin(1, 1, 1, 0);
     	int max_noeuds_in_tas = 0;
-    	//On récupère les noeuds du graphe
+    	//On récupère les noeuds du graphe TODO optionnel mais pratique
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
     	noeuds = this.graphe.getNoeuds();
     	
@@ -65,6 +66,9 @@ public class Pcc extends Algo {
     	
     	/////// On remplit le premier noeud ///////////////////
     	Noeud N1 = noeuds.get(this.origine);
+    	if(star){
+    		Label_A_Star lab = new Label_A_Star(N1);
+    	}
     	Label lab = new Label (N1); 
     	this.carte.put(N1, lab);
     		
@@ -221,11 +225,21 @@ public class Pcc extends Algo {
     	
     	return max_noeuds_in_tas;
     }
+    
+    /**
+     * On surcharge pour mettre un "mode par défaut"
+     * @param type "Distance" ou "Temps"
+     * 
+     */
+    public int dijkstra(String type){
+    	return dijkstra(type, false);
+    }
+    
     public void run() {
 
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
-	// A vous d'implementer la recherche de plus court chemin.
+	
 	try{
 		this.graphe.getNoeuds().get(this.origine);
 		this.graphe.getNoeuds().get(this.destination);
