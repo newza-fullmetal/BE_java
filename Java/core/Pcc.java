@@ -130,7 +130,7 @@ public class Pcc extends Algo {
     		//à voir si on le vire là TODO
     		
     		//Si ce sommet n'a pas été fixé...
-    		if(!this.carte.get(noeud_courant).is_fixed()){
+    		if(!this.carte.get(noeud_courant).is_fixed()){// TODO verifier que le label est dans la carte #try/catch ?
     			//System.out.println("noeud non visité");
     			   			
     			//On marque le noeud visité
@@ -158,6 +158,7 @@ public class Pcc extends Algo {
     	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
     					case "Temps" : 
+    						
     						cout_suiv = lab_courant.getCout() +a.getTemps(); 
     		    			break;
     					case "Distance" :
