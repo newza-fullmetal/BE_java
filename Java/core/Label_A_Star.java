@@ -40,7 +40,7 @@ public class Label_A_Star extends Label{
 	 */
 	public int compareTo(Label lab){
 		Double this_cout = (this.getCout()+this.getEstimation());
-		Double lab_cout = (((Label_A_Star)lab).getCout() + ((Label_A_Star)lab).getEstimation());
+		Double lab_cout = (lab.getCout() + ((Label_A_Star)lab).getEstimation());
 		return this_cout.compareTo(lab_cout);
 	}
 	

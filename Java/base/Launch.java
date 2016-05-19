@@ -102,10 +102,10 @@ public class Launch {
 				
 				if (PccStar.class.isInstance(algo)){
 					System.out.println("C'est un AStar");
-					algo.run(false) ; 
+					algo.run(true) ; 
 				}else if(Pcc.class.isInstance(algo)){
 					System.out.println("C'est un Pcc");
-					algo.run(true) ;
+					algo.run(false) ;
 				}
 			}
 	    }

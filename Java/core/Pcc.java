@@ -68,6 +68,7 @@ public class Pcc extends Algo {
     	/////// On remplit le premier noeud ///////////////////
     	Noeud N1 = noeuds.get(this.origine);
     	Label lab = (star) ? new Label_A_Star(N1) : new Label (N1);
+    	
     	this.carte.put(N1, lab);
     	System.out.println("type : " + lab.getClass());
     		
@@ -86,7 +87,8 @@ public class Pcc extends Algo {
     	
     	//On ajoute les suivants de l'origine dans le tas
     	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
-    		Label lab_suiv = new Label(suiv);
+    		//Label lab_suiv = new Label(suiv);
+    		Label lab_suiv = (star) ? new Label_A_Star(suiv) : new Label (suiv);
     		this.carte.put(suiv, lab_suiv);
     		double cout_suiv = 0;
 			Arete a;
@@ -97,9 +99,11 @@ public class Pcc extends Algo {
 				switch(type){
 				case "Temps" : 					
 					cout_suiv = a.getTemps();
-	    			break;
+					break;
 				case "Distance" :
 					cout_suiv = a.getLongueur();
+					lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
+	    			
 					break;
 				
 				}
@@ -127,7 +131,7 @@ public class Pcc extends Algo {
     	while((!this.tas.isEmpty()) && lab_courant.getCourant() != this.destination){ // ajouter la condition si on a trouvé, on arrete de chercher TODO
     		lab_courant = this.tas.findMin();
     		Noeud noeud_courant = noeuds.get(lab_courant.getCourant());
-    		//à voir si on le vire là TODO
+    		
     		
     		//Si ce sommet n'a pas été fixé...
     		if(!this.carte.get(noeud_courant).is_fixed()){// TODO verifier que le label est dans la carte #try/catch ?
@@ -141,7 +145,8 @@ public class Pcc extends Algo {
     			
     			//On ajoute les suivants du noeud dans le tas
     			for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
-    				Label lab_suiv = new Label(suiv);
+    				//Label lab_suiv = new Label(suiv);
+    				Label lab_suiv = (star) ? new Label_A_Star(suiv) : new Label (suiv);
     				//on vérifie si le noeud est déjà dans la carte
     				if (!this.carte.containsKey(suiv)){
     					this.carte.put(suiv, lab_suiv);
@@ -163,7 +168,8 @@ public class Pcc extends Algo {
     		    			break;
     					case "Distance" :
     						cout_suiv = lab_courant.getCout() + a.getLongueur(); 
-    						break;
+    						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
+    		    			break;
     					
     					}
     	    
