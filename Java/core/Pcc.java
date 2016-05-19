@@ -231,10 +231,10 @@ public class Pcc extends Algo {
      * @param type "Distance" ou "Temps"
      * 
      */
-    public int dijkstra(String type){
+   /* public int dijkstra(String type){
     	return dijkstra(type, false);
     }
-    
+    */
     public void run(Boolean star) {
 
     int disttemps = 0;
