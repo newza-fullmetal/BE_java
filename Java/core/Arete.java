@@ -6,24 +6,26 @@ import base.Descripteur;
 
 public class Arete {
 	
-	/** Le noeud de départ */
+	/** Le noeud de dï¿½part */
 	private Noeud depart;
 	
-	/** Le Noeud d'arrivée */
+	/** Le Noeud d'arrivï¿½e */
 	private Noeud arrivee;
 	
 	/** La description de la route */
 	private Descripteur desc;
 	
-	private float Longueur ; // longueur de l'arrête 
+	private float Longueur ; // longueur de l'arrï¿½te 
 	
-	private int nbseg; // nombre de segments que compose l'arrête 
+	private int nbseg; // nombre de segments que compose l'arrï¿½te 
 	
-	private ArrayList<Float> List_deltalong; //valeurs des longitudes des arrêtes (pour le dessin) 
+	public ArrayList<Float> List_deltalong; //valeurs des longitudes des arrï¿½tes (pour le dessin) 
 	
 	private ArrayList<Float> List_deltalat; // pareil pour les latitudes
 	
-	private int num_zone; // numéro de la zone de la carte. 
+	private int num_zone; // numï¿½ro de la zone de la carte. 
+	
+	private boolean reverse; // pour saoir si le chemin est en inversÃ© #dessin
 	
 	
 	
@@ -46,7 +48,7 @@ public class Arete {
 		}
 	}
 	
-	public Arete(Noeud a, Noeud b, Descripteur desc, float longueur, int nbseg, ArrayList<Float> lon, ArrayList<Float> lat){
+	public Arete(Noeud a, Noeud b, Descripteur desc, float longueur, int nbseg, ArrayList<Float> lon, ArrayList<Float> lat, boolean reverse){
 		this.depart = a;
 		this.arrivee = b;
 		this.desc = desc;
@@ -56,6 +58,7 @@ public class Arete {
 		this.List_deltalat = lat;
 		this.List_deltalong = lon;
 		this.num_zone = num_zone; 
+		this.reverse= reverse;
 		
 		if(!desc.isSensUnique()){
 			this.depart.addSuiv(b);
@@ -64,23 +67,8 @@ public class Arete {
 	}
 	
 	
-	/** Le constructeur 2 !!! A COMPLETER après avoir regardé un peu mieux les "DataInputStream"
-	 * 
-	 */
-	
-	/* public Arete(Noeud a, Noeud b, char type, boolean sensUnique, int vitMax, String nom){
-		this.depart = a;
-		this.arrivee = b;
-		this.desc = new Descripteur(new DataInputStream());//Que mettre ici ? La question que les français se posent!
-		this.depart.addSuiv(b);
-		
-		if(!desc.isSensUnique()){
-			this.depart.addSuiv(b);
-			this.arrivee.addSuiv(a);
-		}
-	}*/
 	public String toString() {
-		return "Arrête partant du noeud " + this.getDepart().getId() + " jusqu'à" + this.getArrivee().getId();
+		return "Arrï¿½te partant du noeud " + this.getDepart().getId() + " jusqu'ï¿½" + this.getArrivee().getId();
 	}
 	
 	public Noeud getDepart(){return this.depart;}
@@ -100,4 +88,6 @@ public class Arete {
 	public float getdeltalong(int a) {return this.List_deltalong.get(a); }
 	
 	public float getdeltalat(int a) {return this.List_deltalat.get(a); }
+	
+	public boolean isreverse() {return this.reverse;};
 }

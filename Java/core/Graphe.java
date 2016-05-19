@@ -101,20 +101,20 @@ public class Graphe {
 	    int nbSuccesseurs;
 	    // Lecture des noeuds
 	    for (int num_node = 0 ; num_node < nb_nodes ; num_node++) {
-		// Lecture du noeud numero num_node
-		/*longitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
-		latitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
-		*/
-		longitude = ((float)dis.readInt ()) / 1E6f ;
-		latitude = ((float)dis.readInt ()) / 1E6f ;
-		
-		//On recup le nombre de successeurs dans le fichier
-		nbSuccesseurs = dis.readUnsignedByte() ;
-		
-		//On crÈe le noeud num_node
-		this.noeuds.add(new Noeud(num_node, latitude, longitude));
-		//On rempli le nb de successeurs pour ce noeud
-		nsuccesseurs_a_lire[num_node] = nbSuccesseurs;
+			// Lecture du noeud numero num_node
+			/*longitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
+			latitudes[num_node] = ((float)dis.readInt ()) / 1E6f ;
+			*/
+			longitude = ((float)dis.readInt ()) / 1E6f ;
+			latitude = ((float)dis.readInt ()) / 1E6f ;
+			
+			//On recup le nombre de successeurs dans le fichier
+			nbSuccesseurs = dis.readUnsignedByte() ;
+			
+			//On crÔøΩe le noeud num_node
+			this.noeuds.add(new Noeud(num_node, latitude, longitude));
+			//On rempli le nb de successeurs pour ce noeud
+			nsuccesseurs_a_lire[num_node] = nbSuccesseurs;
 	    }
 	    
 	    Utils.checkByte(255, dis) ;
@@ -124,13 +124,12 @@ public class Graphe {
 	    	// Lecture du descripteur numero num_descr
 	    	descripteurs[num_descr] = new Descripteur(dis) ;
 
-	    	// On affiche quelques descripteurs parmi tous.
-	    	if (0 == num_descr % (1 + nb_descripteurs / 400)){
-	    		//System.out.println("Descripteur " + num_descr + " = " + descripteurs[num_descr]) ;
-	    	}
 	    }
 	    
 	    Utils.checkByte(254, dis) ;
+	    
+//	    ArrayList<Float> deltalong = new ArrayList<Float>() ; 
+//		ArrayList<Float> deltalat = new ArrayList<Float>() ; 
 	    
 	    // Lecture des successeurs
 	    for (int num_node = 0 ; num_node < nb_nodes ; num_node++) {
@@ -153,6 +152,8 @@ public class Graphe {
 	    		
 	    		
 	    		edges++ ;
+	    		//Noeud depart = noeuds.get(num_node);
+	    		//Noeud arrive = noeuds.get(dest_node);
 		    
 	    		Couleur.set(dessin, descripteurs[descr_num].getType()) ;
 
@@ -161,15 +162,19 @@ public class Graphe {
 	    		longitude = noeuds.get(dest_node).getLon() ;
 	    		latitude  = noeuds.get(dest_node).getLat() ;
 	    		
-	    		ArrayList<Float> deltalong = new ArrayList<Float>() ; 
-	    		ArrayList<Float> deltalat = new ArrayList<Float>() ; 
-
+//	    		// free de m√©moire
+//	    		deltalong.clear();
+//	    		deltalat.clear();
+	    		
+//	    		ArrayList<Float> deltalong = new ArrayList<Float>() ; 
+//	    		ArrayList<Float> deltalat = new ArrayList<Float>() ; 
+	    		 
 	    		// Chaque segment est dessine'
 	    		for (int i = 0 ; i < nb_segm ; i++) {
 	    			float delta_lon = (dis.readShort()) / 2.0E5f ;
-	    			deltalong.add(delta_lon);
+//	    			deltalong.add(delta_lon);
 	    			float delta_lat = (dis.readShort()) / 2.0E5f ;
-	    			deltalat.add(delta_lat);
+//	    			deltalat.add(delta_lat);
 	    			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
 	    			current_long += delta_lon ;
 	    			current_lat  += delta_lat ;
@@ -177,17 +182,27 @@ public class Graphe {
 		    
 	    		// Le dernier trait rejoint le sommet destination.
 	    		// On le dessine si le noeud destination est dans la zone du graphe courant.
+	    		
 	    		if (succ_zone == numzone) {
 	    			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
 	    			
-	    			//On ajoute l'arete ‡ la liste des routes
-	    			Arete a = new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm,deltalong,deltalat);
+	    			//On ajoute l'arete ÔøΩ la liste des routes
+	    			Arete a = new Arete(noeuds.get(num_node),noeuds.get(dest_node),descripteurs[descr_num],longueur,nb_segm,null,null,false);
 		    		//routes.add(a);
 	    			noeuds.get(num_node).addArete(a);
-	    			noeuds.get(dest_node).addArete(a); 			
-		    		//L'ajout des successeurs se fait ‡ la crÈation de l'arrete	
+	    			if (!descripteurs[descr_num].isSensUnique()) { 
+	    				Arete a_reverse = new Arete(noeuds.get(dest_node),noeuds.get(num_node),descripteurs[descr_num],longueur,nb_segm,null,null,true);
+	    				//noeuds.get(num_node).addArete(new Arete(noeuds.get(dest_node),noeuds.get(num_node),descripteurs[descr_num],longueur,nb_segm,deltalong,deltalat)); 	
+	    				noeuds.get(dest_node).addArete(a_reverse); 
+	    				//noeuds.get(dest_node).addArete(a); 
+	    				
+	    			
+	    			}
+	    			
+		    		//L'ajout des successeurs se fait ÔøΩ la crÔøΩation de l'arrete	
 		    		//noeuds.get(num_node).succToString();
 		    	}
+	    		//deltalong.clear();
 	    	}
 	    	
 	   }
@@ -266,20 +281,19 @@ public class Graphe {
     
     
     /**
-     *  RÈcupËre une arÍte avec deux noeuds en paramËtre
+     *  RÔøΩcupÔøΩre une arÔøΩte avec deux noeuds en paramÔøΩtre
      *  
      * @param a Noeud 1
      * @param b Noeud 2
      * @return L'arrete la plus courte ou null si elle n'existe pas
      */
-    //retourne l'arrÍte la plus courte en temps ou en distance 
+    //retourne l'arrÔøΩte la plus courte en temps ou en distance 
     public Arete New_get_arete(int a, int b, String param) {
     	Arete best_arete = null;  
     	double temps_min = 10000f; 
     	float distance_min= 10000f;
     	for (Arete x : noeuds.get(a).getList_arete() )  {
-    		if ( ( b== x.getArrivee().getId()) 
-    			||((b == x.getDepart().getId()) && !(x.getDescripteur().isSensUnique()))) {
+    		if (  b== x.getArrivee().getId()) {
     			switch (param) {
     			case "Temps" : 
     				if (x.getTemps()< temps_min );
@@ -309,7 +323,7 @@ public class Graphe {
     }
     public Arete get_arete(int a, int b, String param) {
     	int ind=0; 
-    	int id_arrÍte = -1;  
+    	int id_arrete = -1;  
     	double temps_min = 10000f; 
     	float distance_min= 10000f;
     	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
@@ -320,35 +334,35 @@ public class Graphe {
     				if (this.routes.get(ind).getTemps()< temps_min );
     				{
     					temps_min = this.routes.get(ind).getTemps(); 
-    					id_arrÍte = ind; 
+    					id_arrete = ind; 
     				}
     				break;
     			case "Distance" :
     				if (this.routes.get(ind).getLongueur()< distance_min );
     				{
     					distance_min = this.routes.get(ind).getLongueur(); 
-    					id_arrÍte = ind; 
+    					id_arrete = ind; 
     				}
     				break;
     				
     			default : 
-    				id_arrÍte = ind;
+    				id_arrete = ind;
     				break;    				
     			}
     		
     		}
     	}
-    	if (id_arrÍte == -1) {
-    		// il n'existe aucune arrÍte liant les deux noeuds
+    	if (id_arrete == -1) {
+    		// il n'existe aucune arrete liant les deux noeuds
     		return null; 
     	}
-    	return this.routes.get(id_arrÍte); 
+    	return this.routes.get(id_arrete); 
     	
     }
     
     
  
-    // marche que pour les piÈtons 
+    // marche que pour les piÔøΩtons 
     /**
      * 
      * @param a Noeud 1
@@ -358,21 +372,21 @@ public class Graphe {
     public Arete get_arete(int a, int b) {
     	int ind=0; 
     	
-    	int id_arrÍte = -1;  
+    	int id_arrete = -1;  
     	double temps_min = 10000f; 
     	for (ind =0 ; ind < this.routes.size() ; ind++ )  {
     		if ( (a == this.routes.get(ind).getDepart().getId()) && ( b== this.routes.get(ind).getArrivee().getId()) 
     			||(b == this.routes.get(ind).getDepart().getId()) && ( a== this.routes.get(ind).getArrivee().getId()) ) {
     			if (this.routes.get(ind).getTemps()<temps_min) {
-    				id_arrÍte = ind;
+    				id_arrete = ind;
     				temps_min = this.routes.get(ind).getTemps();
     			}
     		}
     	}
-    	if (id_arrÍte == -1) {
+    	if (id_arrete == -1) {
     		return null; 
     	}
-    	return this.routes.get(id_arrÍte); 
+    	return this.routes.get(id_arrete); 
     	
     }
 
@@ -418,7 +432,7 @@ public class Graphe {
 	    for (int i = 0 ; i < nb_noeuds ; i++) {
 		current_zone = dis.readUnsignedByte() ;
 		current_node = Utils.read24bits(dis) ;
-		if (i!=0) { // on n'ajoute pas d'arrÍtes au premier passage car pas de noeuds. 
+		if (i!=0) { // on n'ajoute pas d'arrÔøΩtes au premier passage car pas de noeuds. 
 			chemin.add_arete(this.New_get_arete(chemin.get_lastnode().getId(), current_node,"Temps"));
 		}
 		chemin.add_noeud(this.noeuds.get(current_node));
@@ -432,8 +446,8 @@ public class Graphe {
 		}
 	    
 	    dessiner_chemin(chemin); //dessin du chemin 
-	    System.out.println("le chemin a une distance de " + chemin.get_Longueur() + "mËtres");// calcul de la longueur en mËtres 
-	    System.out.println("le chemin a une durÈe de " + chemin.get_Temps() + "minutes");
+	    System.out.println("le chemin a une distance de " + chemin.get_Longueur() + "mÔøΩtres");// calcul de la longueur en mÔøΩtres 
+	    System.out.println("le chemin a une durÔøΩe de " + chemin.get_Temps() + "minutes");
 	    
 	    
 	} catch (IOException e) {
@@ -455,34 +469,49 @@ public class Graphe {
     	}
     	return moy/nbNoeuds;
     }
-    //dessine une arrete de maniËre prÈcise, en ajoutant les segments 
+    //dessine une arrete de maniÔøΩre prÔøΩcise, en ajoutant les segments 
     public void dessiner_arete(Arete a) {
-    	
-    	float longitude =0; 
-    	float latitude = 0; 
-    	Couleur.set(dessin, a.getDescripteur().getType()) ;
-    	dessin.setColor(java.awt.Color.green);
-
-		float current_long = a.getDepart().getLon() ;
-		float current_lat  = a.getDepart().getLat() ;
-		longitude = a.getArrivee().getLon() ;
-		latitude  = a.getArrivee().getLat() ;
-
-		// Chaque segment est dessine'
-		for (int i = 0 ; i < a.getNbseg() ; i++) {
-			float delta_lon = a.getdeltalong(i); 
-			float delta_lat = a.getdeltalat(i); 
-			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
-			current_long += delta_lon ;
-			current_lat  += delta_lat ;
-		}
+    	dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(),a.getArrivee().getLon(),a.getArrivee().getLat()) ;
+//    	float longitude =0; 
+//    	float latitude = 0; 
+//    	float current_long =0;
+//    	float current_lat =0;
+//    	Couleur.set(dessin, a.getDescripteur().getType()) ;
+//    	dessin.setColor(java.awt.Color.green);
+//    	
+//    	if (a.isreverse()){
+//			 current_long = a.getArrivee().getLon() ;
+//			 current_lat  = a.getArrivee().getLat() ;
+//			longitude = a.getDepart().getLon() ;
+//			latitude  = a.getDepart().getLat() ;
+//    	}
+//    	else{
+//    		 current_long = a.getDepart().getLon() ;
+//    		 current_lat  = a.getDepart().getLat() ;
+//    		longitude = a.getArrivee().getLon() ;
+//    		latitude  = a.getArrivee().getLat() ;
+//    	}
+//
+//		// Chaque segment est dessine'
+//		System.out.println("nb seg :" + a.getNbseg());
+//		for (int i = 0 ; i < a.getNbseg() ; i++) {
+//			System.out.println("size delta_long :" + a.List_deltalong.size() );
+//			float delta_lon = a.getdeltalong(i); 
+//			System.out.println("√ßa plante ?" );
+//			float delta_lat = a.getdeltalat(i); 
+//			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
+//			System.out.println("ici ?" );
+//			current_long += delta_lon ;
+//			System.out.println("l√†" );
+//			current_lat  += delta_lat ;
+//		}
     
 		// Le dernier trait rejoint le sommet destination.
 		// On le dessine si le noeud destination est dans la zone du graphe courant.
 //		if (succ_zone == numzone) {
 //			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
 //		}
-		dessin.drawLine(current_long, current_lat, longitude, latitude) ;
+    	//dessin.drawLine(current_long, current_lat, longitude, latitude) ;
     	
     }
     public void dessiner_chemin(Chemin ch){
@@ -493,7 +522,7 @@ public class Graphe {
     	for(Arete a : ch.List_Arete){
     		if (a!=null) {
     				//dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(), a.getArrivee().getLon(),a.getArrivee().getLat()) ;
-    				dessiner_arete(a); // <----- plus prÈcis !! 
+    				dessiner_arete(a); // <----- plus prÔøΩcis !! 
     		}
     	}    	
     	
@@ -508,9 +537,9 @@ public static double dist_noeuds(Noeud n1, Noeud n2){
 /*
 * Questions
 *?
-*Si les noeuds ne sont pas reliÈs (s'il n'existe pas de chemin entre les deux noeuds
+*Si les noeuds ne sont pas reliÔøΩs (s'il n'existe pas de chemin entre les deux noeuds
 *
-*Le tas permet d'avoir les valeurs classÈes (celle qui nous intÈresse en haut)
+*Le tas permet d'avoir les valeurs classÔøΩes (celle qui nous intÔøΩresse en haut)
 *
 *
 *
