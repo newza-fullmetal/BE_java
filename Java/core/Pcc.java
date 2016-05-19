@@ -235,7 +235,7 @@ public class Pcc extends Algo {
     	return dijkstra(type, false);
     }
     
-    public void run() {
+    public void run(Boolean star) {
 
     int disttemps = 0;
     Boolean go = false;
@@ -272,13 +272,13 @@ public class Pcc extends Algo {
 		if (disttemps == 0){
 			
 			exec_time = System.currentTimeMillis();
-			System.out.println("Max noeuds dans le tas : " + dijkstra("Distance"));
+			System.out.println("Max noeuds dans le tas : " + dijkstra("Distance", star));
 			exec_time = System.currentTimeMillis() - exec_time;
 			System.out.println("Temps d'exécution de l'algo : " + exec_time + "ms");
 		}else{
 			
 			exec_time = System.currentTimeMillis();
-			System.out.println("Max noeuds dans le tas : " + dijkstra("Temps"));
+			System.out.println("Max noeuds dans le tas : " + dijkstra("Temps", star));
 			exec_time = System.currentTimeMillis() - exec_time;
 			System.out.println("Temps d'exécution de l'algo : " + exec_time + "ms");
 		

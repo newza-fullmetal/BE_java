@@ -70,38 +70,44 @@ public class Launch {
 	    int choix ;
 	    
 	    while (continuer) {
-		this.afficherMenu () ;
-		choix = this.readarg.lireInt ("Votre choix ? ") ;
-		
-		// Algorithme a executer
-		Algo algo = null ;
-		
-		// Le choix correspond au numero du menu.
-		switch (choix) {
-		case 0 : continuer = false ; break ;
-
-		case 1 : algo = new Connexite(graphe, this.fichierSortie (), this.readarg) ; break ;
-		
-		case 2 : algo = new Pcc(graphe, this.fichierSortie (), this.readarg) ; break ;
-		
-		case 3 : algo = new PccStar(graphe, this.fichierSortie (), this.readarg) ; break ;
+			this.afficherMenu () ;
+			choix = this.readarg.lireInt ("Votre choix ? ") ;
+			
+			// Algorithme a executer
+			Algo algo = null ;
+			
+			// Le choix correspond au numero du menu.
+			switch (choix) {
+			case 0 : continuer = false ; break ;
 	
-		case 4 : graphe.situerClick() ; break ;
-
-		case 5 :
-		    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
-		    graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
-		    break ;
-
-		default:
-		    System.out.println ("Choix de menu incorrect : " + choix) ;
-		    System.exit(1) ;
-		}
+			case 1 : algo = new Connexite(graphe, this.fichierSortie (), this.readarg) ; break ;
+			
+			case 2 : algo = new Pcc(graphe, this.fichierSortie (), this.readarg) ; break ;
+			
+			case 3 : algo = new PccStar(graphe, this.fichierSortie (), this.readarg) ; break ;
 		
-		if (algo != null) { algo.run() ; }
+			case 4 : graphe.situerClick() ; break ;
+	
+			case 5 :
+			    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
+			    graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
+			    break ;
+	
+			default:
+			    System.out.println ("Choix de menu incorrect : " + choix) ;
+			    System.exit(1) ;
+			}
+			
+			if (algo != null) { 
+				if (algo.getClass().isInstance(Pcc.class)){
+					algo.run(false) ; 
+				}else if(algo.getClass().isInstance(PccStar.class)){
+					algo.run(true) ;
+				}
+			}
 	    }
 	    
-	    System.out.println ("Programme terminÃ©.") ;
+	    System.out.println ("Programme terminé.") ;
 	    System.exit(0) ;
 	    
 	    
