@@ -34,12 +34,13 @@ public class Launch {
 	System.out.println ("3 - Plus court chemin A-star") ;
 	System.out.println ("4 - Cliquer sur la carte pour obtenir un numero de sommet.") ;
 	System.out.println ("5 - Charger un fichier de chemin (.path) et le verifier.") ;
+	System.out.println ("6 - lancer procedure de test") ;
 	
 	System.out.println () ;
     }
 
     public static void main(String[] args) {
-	//Le code de d�part
+	//Le code de d�part
 	Launch launch = new Launch(args) ;
 	launch.go () ;
 	
@@ -68,6 +69,9 @@ public class Launch {
 	    // jusqu'a ce que l'on quitte.
 	    boolean continuer = true ;
 	    int choix ;
+	    int NB_tests;
+		boolean TEST = false;
+		PrintStream stdout = System.out;
 	    
 	    while (continuer) {
 			this.afficherMenu () ;
@@ -92,13 +96,46 @@ public class Launch {
 			    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
 			    graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
 			    break ;
+			case 6 : NB_tests = this.readarg.lireInt ("Nombre de test? "); 
+				TEST = true; 
+				Algo PCC = null ; 
+				Algo PCCstar = null;
+				FileOutputStream f = new FileOutputStream("tests.txt"); //écriture dans le fichier
+				System.setOut(new PrintStream(f));
+				//ArrayList <float> tab_times = new ArrayList<float>(); // tableau pour les différents temps d'éxecution
+				
+				for (int i =0;i<NB_tests; i++) {
+					
+									
+					PCC = new Pcc(graphe,10000,72597,0 ); 
+					PCC.run(false);
+					PCCstar = new PccStar(graphe,10000,72597,0) ;
+					PCCstar.run(true);
+					System.out.println("|------------------------------------------------------------------------------------------------------|");
+					System.out.println("| type     | dist en mètres | temps en minutes  | temps d'exec en ms   | Nombres de noeuds dans le tas |");
+					System.out.println("|          |                |                   |                      |                               |");
+					System.out.println("| PCC      |    "+PCC.getchemin().get_Longueur()+"     |"+ PCC.getchemin().get_Temps() + " |           "+ PCC.gettemps_exec() +"        |           "+ PCC.getmax_noeuds_tas() + "                 |");
+					System.out.println("|          |                |                   |                      |                               |");
+					System.out.println("| PCCstar  |    "+PCCstar.getchemin().get_Longueur()+"     |"+ PCCstar.getchemin().get_Temps() + "  |            "+ PCCstar.gettemps_exec() +"       |            "+ PCCstar.getmax_noeuds_tas() + "               |");
+					System.out.println("|          |                |                   |                      |                               |");
+					System.out.println("|------------------------------------------------------------------------------------------------------|");
+				
+				}	
+				
+				System.setOut(stdout);          
+			
+			
+			break; 
+				
 	
 			default:
 			    System.out.println ("Choix de menu incorrect : " + choix) ;
 			    System.exit(1) ;
 			}
+		  
 			
-			if (algo != null) { 
+			
+			if (algo != null && TEST==false) { 
 				
 				if (PccStar.class.isInstance(algo)){
 					System.out.println("C'est un AStar");
@@ -110,7 +147,7 @@ public class Launch {
 			}
 	    }
 	    
-	    System.out.println ("Programme termin�.") ;
+	    System.out.println ("Programme termin�.") ;
 	    System.exit(0) ;
 	    
 	    

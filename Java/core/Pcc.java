@@ -17,6 +17,14 @@ public class Pcc extends Algo {
     protected int zoneDestination ;
     protected int destination ;
     
+    protected long temps_exec ;
+    
+    protected Chemin itineraire;
+    
+    protected int max_noeud_tas = 0;
+    
+    protected int disttemps = -1; // détermine calcul en temps ou distance
+    
     /**
      * La carte qui permet d'associer un label à un noeud
      */
@@ -44,6 +52,21 @@ public class Pcc extends Algo {
 	
 	
     }
+    
+    public Pcc(Graphe gr, int origine, int destination, int disttemps) {
+    	super(gr);
+    	this.disttemps=disttemps;
+		this.zoneOrigine = gr.getZone () ;
+		this.origine = origine;
+		
+		// Demander la zone et le sommet destination.
+		this.zoneOrigine = gr.getZone () ;
+		this.destination = destination;
+		
+		this.carte = new HashMap<Noeud, Label>();
+		this.tas = new BinaryHeap<Label>();
+    	
+    }
        
     
     /**
@@ -56,21 +79,21 @@ public class Pcc extends Algo {
     	
     	this.graphe.getDessin().setColor(Color.BLUE);
     	//Chemin(int version, int magicnumber, int ID_map, int NB_noeud )
-    	Chemin itineraire = new Chemin(1, 1, 1, 0);
+    	this.itineraire = new Chemin(1, 1, 1, 0);
     	int max_noeuds_in_tas = 0;
     	//On récupère les noeuds du graphe TODO optionnel mais pratique
     	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
     	noeuds = this.graphe.getNoeuds();
     	
     	// - >   this.remplirCarte(noeuds);
-    	System.out.println("La HASHMAP est OK !!! ");
+    	//System.out.println("La HASHMAP est OK !!! ");
     	
     	/////// On remplit le premier noeud ///////////////////
     	Noeud N1 = noeuds.get(this.origine);
     	Label lab = (star) ? new Label_A_Star(N1) : new Label (N1);
     	
     	this.carte.put(N1, lab);
-    	System.out.println("type : " + lab.getClass());
+    	//System.out.println("type : " + lab.getClass());
     		
     	Label lab_courant = this.carte.get(noeuds.get(this.origine));    	
     	lab_courant.updateCout(0);
@@ -240,7 +263,7 @@ public class Pcc extends Algo {
     	//Affichage du chemin...
     	//System.out.println(itineraire.toString());
     	//Affichage du cout... NOPE car manque les arretes !!! DONE
-    	System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
+    	//System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
     	
     	return max_noeuds_in_tas;
     }
@@ -257,25 +280,34 @@ public class Pcc extends Algo {
     public void run(Boolean star) {
 
     int disttemps = 0;
-    Boolean go = false;
-    Scanner entree = new  Scanner(System.in);
+    boolean go = false;
+    boolean TEST = false;
+   
     
 	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
-	System.out.println("En distance : 0 |ou| En temps : 1 ...");
-	while(!go){
-		if (entree.hasNextInt()){
-			disttemps = entree.nextInt();
-			if(disttemps == 0 || disttemps == 1){
-				go = true;
+	
+	if (this.disttemps == -1) {
+		Scanner entree = new  Scanner(System.in);
+		System.out.println("En distance : 0 |ou| En temps : 1 ...");
+		while(!go){
+			if (entree.hasNextInt()){
+				disttemps = entree.nextInt();
+				if(disttemps == 0 || disttemps == 1){
+					go = true;
+				}
 			}
-		}
-		//On refait un tour...
-		if (!go){
-			System.out.println("L'entrée n'est pas bonne !");
-			entree.next();
-		}
-		
-    }
+			//On refait un tour...
+			if (!go){
+				System.out.println("L'entrée n'est pas bonne !");
+				entree.next();
+			}
+			
+	    }
+		entree.close();
+	}
+	else {
+		TEST = true;
+	}
 	
 	try{
 		this.graphe.getNoeuds().get(this.origine);
@@ -290,18 +322,46 @@ public class Pcc extends Algo {
 		long exec_time = 0;
 		if (disttemps == 0){
 			
-			exec_time = System.currentTimeMillis();
-			System.out.println("Max noeuds dans le tas : " + dijkstra("Distance", star));
-			exec_time = System.currentTimeMillis() - exec_time;
-			System.out.println("Temps d'exécution de l'algo : " + exec_time + "ms");
+
+			if (TEST== false) {
+				exec_time = System.currentTimeMillis();
+				System.out.println("Max noeuds dans le tas : " + dijkstra("Distance", star));
+				exec_time = System.currentTimeMillis() - exec_time;
+				System.out.println("Temps d'execution de l'algo : " + exec_time + "ms");
+				System.out.println("Cout du chemin : \n en Distance -> " + this.itineraire.get_Longueur() + "  mètres \n en Temps ->" + this.itineraire.get_Temps() + "  minutes");
+			}
+			else{
+				exec_time = System.currentTimeMillis();
+				this.max_noeud_tas = dijkstra("Distance", star);
+				exec_time = System.currentTimeMillis() - exec_time;
+								
+			}
+			
+			this.temps_exec = exec_time;
+		*/
 		}else{
 			
-			exec_time = System.currentTimeMillis();
-			System.out.println("Max noeuds dans le tas : " + dijkstra("Temps", star));
-			exec_time = System.currentTimeMillis() - exec_time;
-			System.out.println("Temps d'exécution de l'algo : " + exec_time + "ms");
+			if (TEST== false) {
+				exec_time = System.currentTimeMillis();
+				System.out.println("Max noeuds dans le tas : " + dijkstra("Temps", star));
+				exec_time = System.currentTimeMillis() - exec_time;
+				System.out.println("Temps d'execution de l'algo : " + exec_time + "ms");
+				System.out.println("Cout du chemin : \n en Distance -> " + this.itineraire.get_Longueur() + "  mï¿½tres \n en Temps ->" + this.itineraire.get_Temps() + "  minutes");
+			}
+			else{
+				exec_time = System.currentTimeMillis();
+				this.max_noeud_tas = dijkstra("Temps", star);
+				exec_time = System.currentTimeMillis() - exec_time;
+				
+								
+			}
+			this.temps_exec = exec_time;
 		
 		}
     }
+    
+    public Chemin getchemin() { return this.itineraire ;}
+    public long gettemps_exec() { return this.temps_exec;}
+    public int getmax_noeuds_tas() {return this.max_noeud_tas;}
     
 }

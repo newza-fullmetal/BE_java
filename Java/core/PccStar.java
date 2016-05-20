@@ -12,6 +12,12 @@ public class PccStar extends Pcc {
 	
     }
     
+    public PccStar(Graphe gr, int origine, int destination, int disttemps) {
+    	super(gr, origine, destination,disttemps) ;
+    }
+    
+    
+    
     /**
      * REDEFINITION
      * Remplir la carte des sommets avec des Labels_A_Star
