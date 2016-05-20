@@ -527,6 +527,8 @@ public class Graphe {
     	}    	
     	
 	}
+    
+    public int get_nbnoeuds() { return this.nbNoeuds;}
 
 
 /////////////////////////////// Dans une classe abstraite Fonctions en static //////////////////////////////////
