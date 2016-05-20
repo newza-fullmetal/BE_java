@@ -40,7 +40,7 @@ public class Launch {
     }
 
     public static void main(String[] args) {
-	//Le code de dï¿½part
+	//Le code de départ
 	Launch launch = new Launch(args) ;
 	launch.go () ;
 	
@@ -100,9 +100,9 @@ public class Launch {
 				TEST = true; 
 				Algo PCC = null ; 
 				Algo PCCstar = null;
-				FileOutputStream f = new FileOutputStream("tests.txt"); //Ã©criture dans le fichier
+				FileOutputStream f = new FileOutputStream("tests.txt"); //écriture dans le fichier
 				System.setOut(new PrintStream(f));
-				//ArrayList <float> tab_times = new ArrayList<float>(); // tableau pour les diffÃ©rents temps d'Ã©xecution
+				//ArrayList <float> tab_times = new ArrayList<float>(); // tableau pour les différents temps d'execution
 				
 				for (int i =0;i<NB_tests; i++) {
 					
@@ -147,7 +147,7 @@ public class Launch {
 			}
 	    }
 	    
-	    System.out.println ("Programme terminï¿½.") ;
+	    System.out.println ("Programme terminé.") ;
 	    System.exit(0) ;
 	    
 	    
