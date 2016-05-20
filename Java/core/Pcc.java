@@ -338,7 +338,7 @@ public class Pcc extends Algo {
 			}
 			
 			this.temps_exec = exec_time;
-		*/
+		
 		}else{
 			
 			if (TEST== false) {
