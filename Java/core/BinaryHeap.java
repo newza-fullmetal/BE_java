@@ -187,6 +187,8 @@ public class BinaryHeap<E extends Comparable<E>> {
         return minItem;
     }
     
+    public boolean exist(E x){return this.map.containsKey(x);}
+    
     /**
      * Prints the heap
      */

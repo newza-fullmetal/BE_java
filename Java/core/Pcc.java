@@ -97,7 +97,8 @@ public class Pcc extends Algo {
 			
 			if  (a != null) {
 				switch(type){
-				case "Temps" : 					
+				case "Temps" : 		
+					lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()))/130000);
 					cout_suiv = a.getTemps();
 					break;
 				case "Distance" :
@@ -108,10 +109,9 @@ public class Pcc extends Algo {
 				
 				}
 				
-			lab_suiv.updateCout(cout_suiv);
-			lab_suiv.setPere(lab_courant.getCourant());
-			lab_suiv.setArete(a);
-    			
+				lab_suiv.updateCout(cout_suiv);
+				lab_suiv.setPere(lab_courant.getCourant());
+				lab_suiv.setArete(a);			
     			this.tas.insert(lab_suiv);
     			this.tas.update(lab_suiv);
     			
@@ -149,7 +149,10 @@ public class Pcc extends Algo {
     				Label lab_suiv = (star) ? new Label_A_Star(suiv) : new Label (suiv);
     				//on vérifie si le noeud est déjà dans la carte
     				if (!this.carte.containsKey(suiv)){
+    					
     					this.carte.put(suiv, lab_suiv);
+    				}else{
+    					lab_suiv = this.carte.get(suiv);
     				}
     	    		double cout_suiv = 0;
     	    		//On cherche le cout
@@ -163,22 +166,32 @@ public class Pcc extends Algo {
     	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
     	    			switch(type){
     					case "Temps" : 
-    						
-    						cout_suiv = lab_courant.getCout() +a.getTemps(); 
+    						lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()))/130000);;
+    						cout_suiv = lab_courant.getCout() + a.getTemps(); 
     		    			break;
     					case "Distance" :
-    						cout_suiv = lab_courant.getCout() + a.getLongueur(); 
+    						
+    						//cout_suiv = lab_courant.getCout() + a.getLongueur(); 
+    						cout_suiv = a.getLongueur() + lab_courant.getCout(); 
     						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
-    		    			break;
+    						
+    						break;
     					
     					}
-    	    
-    	    			lab_suiv.updateCout(cout_suiv);
-    	    			lab_suiv.setPere(lab_courant.getCourant());
-    	    			lab_suiv.setArete(a);
-    	    			//On insère le suiv dans le tas (vérifier si le tas gère si le label est déjà dedans) TODO
-    	    			this.tas.insert(lab_suiv);
-    	    			this.tas.update(lab_suiv);
+    	    			System.out.println(lab_suiv.getCout());
+    	    			if(lab_suiv.getCout() > cout_suiv){
+    	    				lab_suiv.updateCout(cout_suiv);
+    	    				lab_suiv.setPere(lab_courant.getCourant());
+    	    				lab_suiv.setArete(a);
+    	    				
+    	    				if(!this.tas.exist(lab_suiv)){
+    	    					//On insère le suiv dans le tas (vérifier si le tas gère si le label est déjà dedans) TODO
+    	    					this.tas.insert(lab_suiv);
+    	    					this.tas.update(lab_suiv);
+    	    				}else{
+    	    					this.tas.update(lab_suiv);
+    	    				}
+    	    			}
     	    			
     	    			//this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
         				

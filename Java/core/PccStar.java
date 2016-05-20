@@ -17,13 +17,13 @@ public class PccStar extends Pcc {
      * Remplir la carte des sommets avec des Labels_A_Star
      * @param noeuds Le tableau des noeuds du graphe
      */
-    public void remplirCarte(ArrayList<Noeud> noeuds){
+    /*public void remplirCarte(ArrayList<Noeud> noeuds){
     	//On remplit la HashMap
     	for(Noeud n : noeuds){
     		Label_A_Star lab = new Label_A_Star(n);
     		this.carte.put(n, lab);
     	}
-    }
+    }*/
     
     
     

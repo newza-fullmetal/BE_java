@@ -40,8 +40,15 @@ public class Label_A_Star extends Label{
 	 */
 	public int compareTo(Label lab){
 		Double this_cout = (this.getCout()+this.getEstimation());
-		Double lab_cout = (lab.getCout() + ((Label_A_Star)lab).getEstimation());
+		Double lab_cout = (((Label_A_Star)lab).getCout() + ((Label_A_Star)lab).getEstimation());
+		if(this_cout.compareTo(lab_cout) == 0){
+			if(this.getEstimation() == ((Label_A_Star)lab).getEstimation()){
+			return 0;
+			}
+			
+		}
 		return this_cout.compareTo(lab_cout);
+		//si = on retourne l'heuristique la plus petite !!!!!!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 	
 	
