@@ -39,20 +39,21 @@ public class Label_A_Star extends Label{
 	 * On réalise ici une redéfinition et non pas une surcharge pour éviter les problèmes des méthodes binaires
 	 */
 	public int compareTo(Label lab){
-		Double this_cout = (this.getCout()+this.getEstimation());
+		Double this_cout = (this.getCout()+ this.getEstimation());
 		Double lab_cout = (((Label_A_Star)lab).getCout() + ((Label_A_Star)lab).getEstimation());
 		if(this_cout.compareTo(lab_cout) == 0){
+			
 			/*if(this.getEstimation() == ((Label_A_Star)lab).getEstimation()){
 			return 0;
 			}else{
 				return
 				*/
 			this_cout = this.getEstimation();
-			lab_cout = lab.getEstimation();
+			lab_cout = ((Label_A_Star)lab).getEstimation();
 				
 		}
 			
-		
+		//System.out.println("le premier : " + this.getEstimation() + " | l'autre : " + ((Label_A_Star)lab).getEstimation());
 		return this_cout.compareTo(lab_cout);
 		//si = on retourne l'heuristique la plus petite !!!!!!!!!!!!!!!!!!!!!!! TODO !!!!!!!!!!!!!!!!!!!!!!!!!!
 		//-> on ne retourne jamais 0... SAUF SI : les couts totaux sont égaux et que les estimations sont aussi égales.

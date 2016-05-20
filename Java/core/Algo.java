@@ -16,10 +16,10 @@ public abstract class Algo {
 		this.sortie = fichierSortie ;	
     }
     /**
-     * Constructeur pour les tests en sÃ©ries
+     * Constructeur pour les tests en séries
      * @param gr graphe 
-     * @param origine noeud de dÃ©part
-     * @param destination noeud d'arrivÃ©
+     * @param origine noeud de départ
+     * @param destination noeud d'arrivée
      */
     
     protected Algo(Graphe gr) {

@@ -112,7 +112,11 @@ public class Pcc extends Algo {
     	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
     		//Label lab_suiv = new Label(suiv);
     		Label lab_suiv = (star) ? new Label_A_Star(suiv) : new Label (suiv);
-    		this.carte.put(suiv, lab_suiv);
+    		if (!this.carte.containsKey(suiv)){
+    			this.carte.put(suiv, lab_suiv);
+    		}else{
+    			lab_suiv = this.carte.get(suiv);
+    		}
     		double cout_suiv = 0;
 			Arete a;
 			
@@ -137,6 +141,9 @@ public class Pcc extends Algo {
 				lab_suiv.setArete(a);			
     			this.tas.insert(lab_suiv);
     			this.tas.update(lab_suiv);
+    			this.carte.put(suiv, lab_suiv);
+    			//System.out.println("Le cout du noeud " + lab_suiv.getCourant() + " : " + cout_suiv);
+
     			
     		}else{
     			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type));
@@ -153,8 +160,9 @@ public class Pcc extends Algo {
     	
     	while((!this.tas.isEmpty()) && lab_courant.getCourant() != this.destination){ // ajouter la condition si on a trouvé, on arrete de chercher TODO
     		lab_courant = this.tas.findMin();
+    		this.tas.deleteMin();
     		Noeud noeud_courant = noeuds.get(lab_courant.getCourant());
-    		
+    		//System.out.println("Le min : " + lab_courant.getCourant());
     		
     		//Si ce sommet n'a pas été fixé...
     		if(!this.carte.get(noeud_courant).is_fixed()){// TODO verifier que le label est dans la carte #try/catch ?
@@ -168,62 +176,66 @@ public class Pcc extends Algo {
     			
     			//On ajoute les suivants du noeud dans le tas
     			for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
+    				
     				//Label lab_suiv = new Label(suiv);
     				Label lab_suiv = (star) ? new Label_A_Star(suiv) : new Label (suiv);
     				//on vérifie si le noeud est déjà dans la carte
     				if (!this.carte.containsKey(suiv)){
-    					
+    					//Mettre à jour le cout ?
     					this.carte.put(suiv, lab_suiv);
     				}else{
     					lab_suiv = this.carte.get(suiv);
     				}
-    	    		double cout_suiv = 0;
-    	    		//On cherche le cout
-    	    		 	    		
-
-    	    		Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type);
-    	    		
-    	    		//System.out.println("Le New_get_arete dure : " + d + "ms.");
-    	    		//Thread.sleep(2000);
-    	    		if(a != null){
-    	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
-    	    			switch(type){
-    					case "Temps" : 
-    						lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()))/130000);;
-    						cout_suiv = lab_courant.getCout() + a.getTemps(); 
-    		    			break;
-    					case "Distance" :
-    						
-    						//cout_suiv = lab_courant.getCout() + a.getLongueur(); 
-    						cout_suiv = a.getLongueur() + lab_courant.getCout(); 
-    						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
-    						
-    						break;
-    					
-    					}
-    	    			System.out.println(lab_suiv.getCout());
-    	    			if(lab_suiv.getCout() > cout_suiv){
-    	    				lab_suiv.updateCout(cout_suiv);
-    	    				lab_suiv.setPere(lab_courant.getCourant());
-    	    				lab_suiv.setArete(a);
-    	    				
-    	    				if(!this.tas.exist(lab_suiv)){
-    	    					//On insère le suiv dans le tas (vérifier si le tas gère si le label est déjà dedans) TODO
-    	    					this.tas.insert(lab_suiv);
-    	    					this.tas.update(lab_suiv);
-    	    				}else{
-    	    					this.tas.update(lab_suiv);
-    	    				}
-    	    			}
+    				if(!lab_suiv.is_fixed()){
+	    	    		double cout_suiv = 0;
+	    	    		//On cherche le cout
+	    	    		 	    		
+	
+	    	    		Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type);
+	    	    		
+	    	    		//System.out.println("Le New_get_arete dure : " + d + "ms.");
+	    	    		//Thread.sleep(2000);
+	    	    		if(a != null){
+	    	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
+	    	    			switch(type){
+	    					case "Temps" : 
+	    						lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()))/130000);;
+	    						cout_suiv = lab_courant.getCout() + a.getTemps(); 
+	    		    			break;
+	    					case "Distance" :
+	    						
+	    						//cout_suiv = lab_courant.getCout() + a.getLongueur(); 
+	    						cout_suiv = a.getLongueur() + lab_courant.getCout(); 
+	    						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
+	    						
+	    						break;
+	    					
+	    					}
+	    	    			//System.out.println(lab_suiv.getCout());
+	    	    			if(lab_suiv.getCout() > cout_suiv){
+	    	    				lab_suiv.updateCout(cout_suiv);
+	    	    				lab_suiv.setPere(lab_courant.getCourant());
+	    	    				lab_suiv.setArete(a);	    				
+	    	    				this.carte.put(suiv, lab_suiv);
+	    	    			}
+	    	    			if(!this.tas.exist(lab_suiv)){
+		    					//On insère le suiv dans le tas (vérifier si le tas gère si le label est déjà dedans) TODO
+		    					this.tas.insert(lab_suiv);
+		    					this.tas.update(lab_suiv);
+		    				}else{
+		    					this.tas.update(lab_suiv);
+		    				}
+	    	    			//System.out.println("Le cout du noeud " + lab_suiv.getCourant() + " : " + cout_suiv);
+	    	    			//this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
+	    	    		//this.tas.printSorted();
+    				
     	    			
-    	    			//this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 5);
-        				
-    	    			
-    	    		}else{
-    	    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type));
+	    	    		}else{
+	    	    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type));
     	    			//System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
-    	    		}
-    	    		
+	    	    		}
+    				}
+    	    		//System.out.println("suiv " +lab_suiv.getCourant() + "  " + (lab_suiv.getCout() + lab_suiv.getEstimation()));
     			}
     			//Les suivants ont été ajoutés
     			//System.out.println("Les suivs");
@@ -238,7 +250,8 @@ public class Pcc extends Algo {
     		//On sort le min du tas
     		this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 2);
 			
-    		this.tas.deleteMin();
+    		//this.tas.deleteMin();
+    		
     	}
     	/*
     	 * Fin du parcours du graphe
@@ -262,7 +275,7 @@ public class Pcc extends Algo {
     	//On sort quand on est revenu au départ ou s'il y a une erreur...
     	//Affichage du chemin...
     	//System.out.println(itineraire.toString());
-    	//Affichage du cout... NOPE car manque les arretes !!! DONE
+    	//Affichage du cout...
     	//System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
     	
     	return max_noeuds_in_tas;
@@ -303,7 +316,7 @@ public class Pcc extends Algo {
 			}
 			
 	    }
-		entree.close();
+		//entree.close();
 	}
 	else {
 		TEST = true;

@@ -38,7 +38,7 @@ public class PccStar extends Pcc {
     	System.out.println("Run PCC-Star de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 
     	// A vous d'implementer la recherche de plus court chemin A*
-    	super.run(star);
+    	super.run(true);
     }
 
 }

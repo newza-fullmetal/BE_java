@@ -96,7 +96,7 @@ public class Launch {
 			    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
 			    graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
 			    break ;
-			case 6 : NB_tests = this.readarg.lireInt ("Nombre de test? "); 
+			/*case 6 : NB_tests = this.readarg.lireInt ("Nombre de test? "); 
 				TEST = true; 
 				Algo PCC = null ; 
 				Algo PCCstar = null;
@@ -126,7 +126,7 @@ public class Launch {
 			
 			
 			break; 
-				
+				*/
 	
 			default:
 			    System.out.println ("Choix de menu incorrect : " + choix) ;
