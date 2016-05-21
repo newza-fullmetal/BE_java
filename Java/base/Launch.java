@@ -109,8 +109,9 @@ public class Launch {
 				double distance_min = 50000; // distance minimale entre deux points pour lancer le test
 				
 				System.out.println("|------------------------------------------------------------------------------------------------------|");
-				System.out.println(" Programme de test lancé !!");
+				System.out.println(" Programme de tests lancé !!");
 				System.out.println(" Nombre de tests : " + NB_tests);
+				System.out.println(" Bon voyage !!");
 				System.out.println("|------------------------------------------------------------------------------------------------------|");
 				
 				Long[] tab_times_pcc = new Long[NB_tests*2];
@@ -138,13 +139,13 @@ public class Launch {
 							System.out.println("| type     | dist en metres | temps en minutes  | temps d'exec en ms   | Nombres de noeuds dans le tas |");
 							System.out.println("|          |                |                   |                      |                               |");
 							System.out.println("| PCC      |-------------------------------------------------------------------------------------------|");
-							System.out.println("| Temps    |    "+PC2.getchemin().get_Longueur()+"     |"+ PC2.getchemin().get_Temps() + " |           "+ PC2.gettemps_exec() +"        |           "+ PC2.getmax_noeuds_tas() + "                 |");
-							System.out.println("| Distance |    "+PCC.getchemin().get_Longueur()+"     |"+ PCC.getchemin().get_Temps() + " |           "+ PCC.gettemps_exec() +"        |           "+ PCC.getmax_noeuds_tas() + "                 |");
+							System.out.println("| Temps    |    "+PC2.getchemin().get_Longueur()+"    |"+ PC2.getchemin().get_Temps() + " |           "+ PC2.gettemps_exec() +"        |           "+ PC2.getmax_noeuds_tas() + "                 |");
+							System.out.println("| Distance |    "+PCC.getchemin().get_Longueur()+"    |"+ PCC.getchemin().get_Temps() + " |           "+ PCC.gettemps_exec() +"        |           "+ PCC.getmax_noeuds_tas() + "                 |");
 							System.out.println("|          |                |                   |                      |                               |");
 							System.out.println("| PCCstar  |-------------------------------------------------------------------------------------------|");
-							System.out.println("| Temps    |   "+PC2star.getchemin().get_Longueur()+"     |"+ PC2star.getchemin().get_Temps() + "  |            "+ PC2star.gettemps_exec() +"       |            "+ PC2star.getmax_noeuds_tas() + "               |");
-							System.out.println("| Distance |   "+PCCstar.getchemin().get_Longueur()+"     |"+ PCCstar.getchemin().get_Temps() + "  |            "+ PCCstar.gettemps_exec() +"       |            "+ PCCstar.getmax_noeuds_tas() + "               |");
-							System.out.println("|          |                |                   |                      |                               |");
+							System.out.println("| Temps    |   "+PC2star.getchemin().get_Longueur()+"     |"+ PC2star.getchemin().get_Temps() + "  |            "+ PC2star.gettemps_exec() +"       |            "+ PC2star.getmax_noeuds_tas() + "                |");
+							System.out.println("| Distance |   "+PCCstar.getchemin().get_Longueur()+"     |"+ PCCstar.getchemin().get_Temps() + "  |            "+ PCCstar.gettemps_exec() +"       |            "+ PCCstar.getmax_noeuds_tas() + "                |");
+							System.out.println("|          |                |                   |                      |                               |"); 
 							System.out.println("|------------------------------------------------------------------------------------------------------|");
 							System.out.println("");
 							tab_times_pcc[i] = PCC.gettemps_exec();
