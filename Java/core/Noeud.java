@@ -97,6 +97,18 @@ public class Noeud {
 	
 	public ArrayList<Arete> getList_arete() {return this.List_arete ;} 
 	
+	public Arete trouveArete(Noeud n){
+		
+		for(Arete a : this.List_arete){
+			if(a.getDepart().getId() == this.id && a.getArrivee().getId() == n.getId()){
+				return a;
+			}
+			if(a.getDepart().getId() == n.getId() && a.getArrivee().getId() == this.id){
+				return a;
+			}
+		}
+		return null;
+	}
 	
 	
 }

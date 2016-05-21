@@ -86,9 +86,9 @@ public class Pcc extends Algo {
     	this.itineraire = new Chemin(1, 1, 1, 0);
     	int max_noeuds_in_tas = 0;
     	//On récupère les noeuds du graphe TODO optionnel mais pratique
-    	ArrayList<Noeud> noeuds = new ArrayList<Noeud>();
-    	noeuds = this.graphe.getNoeuds();
+    	ArrayList<Noeud> noeuds = this.graphe.getNoeuds();
     	
+    	Noeud dest = noeuds.get(this.destination);
     	// - >   this.remplirCarte(noeuds);
     	//System.out.println("La HASHMAP est OK !!! ");
     	
@@ -122,19 +122,21 @@ public class Pcc extends Algo {
     			lab_suiv = this.carte.get(suiv);
     		}
     		double cout_suiv = 0;
-			Arete a;
+			Arete a = null;
 			
-			a= this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type);
+			//a= this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant(),type);
+			
+			a = noeuds.get(lab_courant.getCourant()).trouveArete(suiv);
 			
 			if  (a != null) {
 				switch(type){
 				case "Temps" : 		
-					lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()))/130000);
+					lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
 					cout_suiv = a.getTemps();
 					break;
 				case "Distance" :
 					cout_suiv = a.getLongueur();
-					lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
+					lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
 	    			
 					break;
 				
@@ -193,24 +195,24 @@ public class Pcc extends Algo {
     				if(!lab_suiv.is_fixed()){
 	    	    		double cout_suiv = 0;
 	    	    		//On cherche le cout
-	    	    		 	    		
+	    	    		double cout_cour = lab_courant.getCout(); 	    		
 	
-	    	    		Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type);
-	    	    		
+	    	    		//Arete a = this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type);
+	    	    		Arete a = noeuds.get(lab_courant.getCourant()).trouveArete(suiv);
 	    	    		//System.out.println("Le New_get_arete dure : " + d + "ms.");
 	    	    		//Thread.sleep(2000);
 	    	    		if(a != null){
 	    	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
 	    	    			switch(type){
 	    					case "Temps" : 
-	    						lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()))/130000);;
-	    						cout_suiv = lab_courant.getCout() + a.getTemps(); 
+	    						lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
+	    						cout_suiv = cout_cour + a.getTemps(); 
 	    		    			break;
 	    					case "Distance" :
 	    						
 	    						//cout_suiv = lab_courant.getCout() + a.getLongueur(); 
-	    						cout_suiv = a.getLongueur() + lab_courant.getCout(); 
-	    						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), noeuds.get(this.destination).getLon(), noeuds.get(this.destination).getLat()));
+	    						cout_suiv = a.getLongueur() + cout_cour; 
+	    						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
 	    						
 	    						break;
 	    					
@@ -247,8 +249,9 @@ public class Pcc extends Algo {
     		}else{
     			//System.out.println("Le noeud " + lab_courant.getCourant() + " a déjà été visité !");
     		}
-    		if(max_noeuds_in_tas < this.tas.size()){
-    			max_noeuds_in_tas = this.tas.size();
+    		int size = this.tas.size();
+    		if(max_noeuds_in_tas < size){
+    			max_noeuds_in_tas = size;
     		}
     		this.graphe.getDessin().setColor(Color.MAGENTA);
     		//On sort le min du tas
@@ -262,7 +265,7 @@ public class Pcc extends Algo {
     	 */
     	//System.out.println("Fin du parcours");
     	//On remplit le chemin
-    	lab_courant = this.carte.get(noeuds.get(this.destination));
+    	lab_courant = this.carte.get(dest);
 		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
 		
 
@@ -337,13 +340,15 @@ public class Pcc extends Algo {
 		
 	}
 		long exec_time = 0;
+		int max = 0;
 		if (disttemps == 0){
 			
 
 			if (TEST== false) {
 				exec_time = System.currentTimeMillis();
-				System.out.println("Max noeuds dans le tas : " + dijkstra("Distance", star));
+				max = dijkstra("Distance", star);
 				exec_time = System.currentTimeMillis() - exec_time;
+				System.out.println("Max noeuds dans le tas : " + max);
 				System.out.println("Nombre de noeus visités : " + this.noeuds_explores);
 				System.out.println("Temps d'execution de l'algo : " + exec_time + "ms");
 				System.out.println("Cout du chemin : \n en Distance -> " + this.itineraire.get_Longueur() + "  mètres \n en Temps ->" + this.itineraire.get_Temps() + "  minutes");
