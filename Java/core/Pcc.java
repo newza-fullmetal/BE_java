@@ -164,8 +164,11 @@ public class Pcc extends Algo {
     	
     	//Penser à sortir le noeud de départ du tas TODO
     	
-    	while((!this.tas.isEmpty()) && lab_courant.getCourant() != this.destination){ // ajouter la condition si on a trouvé, on arrete de chercher TODO
+    	while((!this.tas.isEmpty()) && (lab_courant.getCourant() != this.destination)){ // ajouter la condition si on a trouvé, on arrete de chercher TODO
     		lab_courant = this.tas.findMin();
+    		//if(lab_courant.getCourant() == this.destination)
+    			//System.out.println("La destination est atteinte !");
+    		//System.out.println(".");
     		this.tas.deleteMin();
     		Noeud noeud_courant = noeuds.get(lab_courant.getCourant());
     		//System.out.println("Le min : " + lab_courant.getCourant());
@@ -212,7 +215,12 @@ public class Pcc extends Algo {
 	    						
 	    						//cout_suiv = lab_courant.getCout() + a.getLongueur(); 
 	    						cout_suiv = a.getLongueur() + cout_cour; 
-	    						lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
+	    						if(lab_suiv.getCourant() == this.destination){
+	    							lab_suiv.updateEstimation(0);
+	    						}else{
+	    							lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
+	    						}
+	    					
 	    						
 	    						break;
 	    					
@@ -241,10 +249,10 @@ public class Pcc extends Algo {
     	    			//System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
 	    	    		}
     				}
-    	    		//System.out.println("suiv " +lab_suiv.getCourant() + "  " + (lab_suiv.getCout() + lab_suiv.getEstimation()));
+    	    		
     			}
     			//Les suivants ont été ajoutés
-    			//System.out.println("Les suivs");
+    			
     			
     		}else{
     			//System.out.println("Le noeud " + lab_courant.getCourant() + " a déjà été visité !");

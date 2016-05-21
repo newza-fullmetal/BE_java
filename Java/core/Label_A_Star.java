@@ -12,6 +12,7 @@ public class Label_A_Star extends Label{
 	
 	public Label_A_Star(Noeud n){
 		super(n);
+		this.estimation = Double.MAX_VALUE;
 	}
 	
 	/**
