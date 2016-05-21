@@ -155,7 +155,7 @@ public class Pcc extends Algo {
     		}
     	}
     	
-    	System.out.println("Les suivants de l'origine OK");
+    	//System.out.println("Les suivants de l'origine OK");
     	max_noeuds_in_tas = this.tas.size();
     	//System.out.println("Le tas trié : \n");
     	//this.tas.printSorted();
@@ -260,7 +260,7 @@ public class Pcc extends Algo {
     	/*
     	 * Fin du parcours du graphe
     	 */
-    	System.out.println("Fin du parcours");
+    	//System.out.println("Fin du parcours");
     	//On remplit le chemin
     	lab_courant = this.carte.get(noeuds.get(this.destination));
 		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
@@ -281,7 +281,7 @@ public class Pcc extends Algo {
     	//System.out.println(itineraire.toString());
     	//Affichage du cout...
     	//System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
-    	
+    	//System.out.println("Vraie !!!!!!!!!!!!!!!!!!!!!!!!!!! Fin du parcours");
     	return max_noeuds_in_tas;
     }
     

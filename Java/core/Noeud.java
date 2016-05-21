@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Noeud {
 	
-
+ 
 	/** 
 	 * Un identifiant pour définir le noeud 
 	 */
