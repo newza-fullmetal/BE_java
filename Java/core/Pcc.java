@@ -208,8 +208,13 @@ public class Pcc extends Algo {
 	    	    			//System.out.println("\n" + this.graphe.New_get_arete(lab_courant.getCourant(),lab_suiv.getCourant()).toString() + "\n");
 	    	    			switch(type){
 	    					case "Temps" : 
-	    						lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
-	    						cout_suiv = cout_cour + a.getTemps(); 
+	    						if(lab_suiv.getCourant() == this.destination){
+	    							lab_suiv.updateEstimation(0);
+	    							cout_suiv = 0;
+	    						}else{
+	    							lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
+	    							cout_suiv = cout_cour + a.getTemps();
+	    						}
 	    		    			break;
 	    					case "Distance" :
 	    						
@@ -217,6 +222,7 @@ public class Pcc extends Algo {
 	    						cout_suiv = a.getLongueur() + cout_cour; 
 	    						if(lab_suiv.getCourant() == this.destination){
 	    							lab_suiv.updateEstimation(0);
+	    							cout_suiv = 0;
 	    						}else{
 	    							lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
 	    						}
