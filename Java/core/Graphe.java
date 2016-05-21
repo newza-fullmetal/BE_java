@@ -281,7 +281,7 @@ public class Graphe {
     
     
     /**
-     *  Rï¿½cupï¿½re une arï¿½te avec deux noeuds en paramï¿½tre
+     *  Rï¿½cupï¿½re une arète avec deux noeuds en paramètre
      *  
      * @param a Noeud 1
      * @param b Noeud 2

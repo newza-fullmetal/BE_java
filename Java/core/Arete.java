@@ -6,24 +6,24 @@ import base.Descripteur;
 
 public class Arete {
 	
-	/** Le noeud de dï¿½part */
+	/** Le noeud de départ */
 	private Noeud depart;
 	
-	/** Le Noeud d'arrivï¿½e */
+	/** Le Noeud d'arrivée */
 	private Noeud arrivee;
 	
 	/** La description de la route */
 	private Descripteur desc;
 	
-	private float Longueur ; // longueur de l'arrï¿½te 
+	private float Longueur ; // longueur de l'arete 
 	
-	private int nbseg; // nombre de segments que compose l'arrï¿½te 
+	private int nbseg; // nombre de segments que compose l'arete 
 	
-	public ArrayList<Float> List_deltalong; //valeurs des longitudes des arrï¿½tes (pour le dessin) 
+	public ArrayList<Float> List_deltalong; //valeurs des longitudes des aretes (pour le dessin) 
 	
 	private ArrayList<Float> List_deltalat; // pareil pour les latitudes
 	
-	private int num_zone; // numï¿½ro de la zone de la carte. 
+	private int num_zone; // numéro de la zone de la carte. 
 	
 	private boolean reverse; // pour saoir si le chemin est en inversÃ© #dessin
 	
@@ -65,6 +65,8 @@ public class Arete {
 			this.arrivee.addSuiv(a);
 		}
 	}
+	
+	
 	
 	
 	public String toString() {
