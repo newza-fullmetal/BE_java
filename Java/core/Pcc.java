@@ -21,7 +21,9 @@ public class Pcc extends Algo {
     
     protected Chemin itineraire;
     
-    protected int max_noeud_tas = 0;
+    protected int max_noeud_tas;
+    
+    protected int noeuds_explores;
     
     protected int disttemps = -1; // détermine calcul en temps ou distance
     
@@ -37,17 +39,19 @@ public class Pcc extends Algo {
     protected BinaryHeap<Label> tas;
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
-	super(gr, sortie, readarg) ;
-
-	this.zoneOrigine = gr.getZone () ;
-	this.origine = readarg.lireInt ("Numero du sommet d'origine ? ") ;
-
-	// Demander la zone et le sommet destination.
-	this.zoneOrigine = gr.getZone () ;
-	this.destination = readarg.lireInt ("Numero du sommet destination ? ");
+		super(gr, sortie, readarg) ;
 	
-	this.carte = new HashMap<Noeud, Label>();
-	this.tas = new BinaryHeap<Label>();
+		this.max_noeud_tas = 0;
+		this.noeuds_explores = 0;
+		this.zoneOrigine = gr.getZone () ;
+		this.origine = readarg.lireInt ("Numero du sommet d'origine ? ") ;
+	
+		// Demander la zone et le sommet destination.
+		this.zoneOrigine = gr.getZone () ;
+		this.destination = readarg.lireInt ("Numero du sommet destination ? ");
+		
+		this.carte = new HashMap<Noeud, Label>();
+		this.tas = new BinaryHeap<Label>();
 	
 	
 	
@@ -106,7 +110,7 @@ public class Pcc extends Algo {
     	this.tas.insert(lab_courant);
     	this.tas.update(lab_courant);
     	//System.out.println(noeuds.get(lab_courant.getCourant()).getSuiv());
-
+    	this.noeuds_explores ++;
     	
     	//On ajoute les suivants de l'origine dans le tas
     	for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
@@ -173,7 +177,7 @@ public class Pcc extends Algo {
     			//On met à jour le noeud dans la HashMap (cout...)
     			
     			this.carte.put(noeud_courant, lab_courant);
-    			
+    			this.noeuds_explores ++;
     			//On ajoute les suivants du noeud dans le tas
     			for(Noeud suiv : noeuds.get(lab_courant.getCourant()).getSuiv()){
     				
@@ -340,6 +344,7 @@ public class Pcc extends Algo {
 				exec_time = System.currentTimeMillis();
 				System.out.println("Max noeuds dans le tas : " + dijkstra("Distance", star));
 				exec_time = System.currentTimeMillis() - exec_time;
+				System.out.println("Nombre de noeus visités : " + this.noeuds_explores);
 				System.out.println("Temps d'execution de l'algo : " + exec_time + "ms");
 				System.out.println("Cout du chemin : \n en Distance -> " + this.itineraire.get_Longueur() + "  mètres \n en Temps ->" + this.itineraire.get_Temps() + "  minutes");
 			}
@@ -358,8 +363,9 @@ public class Pcc extends Algo {
 				exec_time = System.currentTimeMillis();
 				System.out.println("Max noeuds dans le tas : " + dijkstra("Temps", star));
 				exec_time = System.currentTimeMillis() - exec_time;
+				System.out.println("Nombre de noeus visités : " + this.noeuds_explores);
 				System.out.println("Temps d'execution de l'algo : " + exec_time + "ms");
-				System.out.println("Cout du chemin : \n en Distance -> " + this.itineraire.get_Longueur() + "  mï¿½tres \n en Temps ->" + this.itineraire.get_Temps() + "  minutes");
+				System.out.println("Cout du chemin : \n en Distance -> " + this.itineraire.get_Longueur() + "  mètres \n en Temps ->" + this.itineraire.get_Temps() + "  minutes");
 			}
 			else{
 				exec_time = System.currentTimeMillis();
