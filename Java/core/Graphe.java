@@ -472,46 +472,6 @@ public class Graphe {
     //dessine une arrete de mani�re pr�cise, en ajoutant les segments 
     public void dessiner_arete(Arete a) {
     	dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(),a.getArrivee().getLon(),a.getArrivee().getLat()) ;
-//    	float longitude =0; 
-//    	float latitude = 0; 
-//    	float current_long =0;
-//    	float current_lat =0;
-//    	Couleur.set(dessin, a.getDescripteur().getType()) ;
-//    	dessin.setColor(java.awt.Color.green);
-//    	
-//    	if (a.isreverse()){
-//			 current_long = a.getArrivee().getLon() ;
-//			 current_lat  = a.getArrivee().getLat() ;
-//			longitude = a.getDepart().getLon() ;
-//			latitude  = a.getDepart().getLat() ;
-//    	}
-//    	else{
-//    		 current_long = a.getDepart().getLon() ;
-//    		 current_lat  = a.getDepart().getLat() ;
-//    		longitude = a.getArrivee().getLon() ;
-//    		latitude  = a.getArrivee().getLat() ;
-//    	}
-//
-//		// Chaque segment est dessine'
-//		System.out.println("nb seg :" + a.getNbseg());
-//		for (int i = 0 ; i < a.getNbseg() ; i++) {
-//			System.out.println("size delta_long :" + a.List_deltalong.size() );
-//			float delta_lon = a.getdeltalong(i); 
-//			System.out.println("ça plante ?" );
-//			float delta_lat = a.getdeltalat(i); 
-//			dessin.drawLine(current_long, current_lat, (current_long + delta_lon), (current_lat + delta_lat)) ;
-//			System.out.println("ici ?" );
-//			current_long += delta_lon ;
-//			System.out.println("là" );
-//			current_lat  += delta_lat ;
-//		}
-    
-		// Le dernier trait rejoint le sommet destination.
-		// On le dessine si le noeud destination est dans la zone du graphe courant.
-//		if (succ_zone == numzone) {
-//			dessin.drawLine(current_long, current_lat, longitude, latitude) ;
-//		}
-    	//dessin.drawLine(current_long, current_lat, longitude, latitude) ;
     	
     }
     public void dessiner_chemin(Chemin ch){
@@ -529,6 +489,7 @@ public class Graphe {
 	}
     
     public int get_nbnoeuds() { return this.nbNoeuds;}
+    public Noeud get_noeud(int id) { return this.noeuds.get(id);}
 
 
 /////////////////////////////// Dans une classe abstraite Fonctions en static //////////////////////////////////

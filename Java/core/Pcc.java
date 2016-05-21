@@ -155,7 +155,7 @@ public class Pcc extends Algo {
     		}
     	}
     	
-    	System.out.println("Les suivants de l'origine OK");
+    	//System.out.println("Les suivants de l'origine OK");
     	max_noeuds_in_tas = this.tas.size();
     	//System.out.println("Le tas trié : \n");
     	//this.tas.printSorted();
@@ -235,7 +235,7 @@ public class Pcc extends Algo {
     				
     	    			
 	    	    		}else{
-	    	    			System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type));
+	    	    		//	System.out.println("Des beugs ! "+this.graphe.New_get_arete(lab_courant.getCourant(),suiv.getId(),type));
     	    			//System.out.println("Pas de chemin du noeud "+lab_courant.getCourant()+ " vers le noeud "+lab_suiv.getCourant()+" en effet : "+this.graphe.New_get_arete(lab_suiv.getCourant(), lab_courant.getCourant(), type).getDescripteur().getNom());
 	    	    		}
     				}
@@ -260,7 +260,7 @@ public class Pcc extends Algo {
     	/*
     	 * Fin du parcours du graphe
     	 */
-    	System.out.println("Fin du parcours");
+    	//System.out.println("Fin du parcours");
     	//On remplit le chemin
     	lab_courant = this.carte.get(noeuds.get(this.destination));
 		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
@@ -301,7 +301,7 @@ public class Pcc extends Algo {
     boolean TEST = false;
    
     
-	System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
+	//System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
 	
 	if (this.disttemps == -1) {
 		Scanner entree = new  Scanner(System.in);

@@ -14,6 +14,7 @@ package base ;
  */
 
 import core.* ;
+import java.util.Random;
 import java.io.* ;
 
 public class Launch {
@@ -96,37 +97,93 @@ public class Launch {
 			    String nom_chemin = this.readarg.lireString ("Nom du fichier .path contenant le chemin ? ") ;
 			    graphe.verifierChemin(Openfile.open (nom_chemin), nom_chemin) ;
 			    break ;
-			/*case 6 : NB_tests = this.readarg.lireInt ("Nombre de test? "); 
+			case 6 : NB_tests = this.readarg.lireInt ("Nombre de test? "); 
 				TEST = true; 
 				Algo PCC = null ; 
 				Algo PCCstar = null;
+				Algo PC2 = null ; 
+				Algo PC2star = null;
+				Random randomGenerator = new Random();
 				FileOutputStream f = new FileOutputStream("tests.txt"); //écriture dans le fichier
 				System.setOut(new PrintStream(f));
-				//ArrayList <float> tab_times = new ArrayList<float>(); // tableau pour les différents temps d'execution
+				double distance_min = 50000; // distance minimale entre deux points pour lancer le test
+				
+				System.out.println("|------------------------------------------------------------------------------------------------------|");
+				System.out.println(" Programme de test lancé !!");
+				System.out.println(" Nombre de tests : " + NB_tests);
+				System.out.println("|------------------------------------------------------------------------------------------------------|");
+				
+				Long[] tab_times_pcc = new Long[NB_tests*2];
+				Long[] tab_times_star = new Long[NB_tests*2];
+				
 				
 				for (int i =0;i<NB_tests; i++) {
+					int depart = randomGenerator.nextInt(graphe.get_nbnoeuds());
+					int arrivee = randomGenerator.nextInt(graphe.get_nbnoeuds());
+					double distance = Graphe.distance(graphe.get_noeud(depart).getLon(), graphe.get_noeud(depart).getLat(), graphe.get_noeud(arrivee).getLon(), graphe.get_noeud(arrivee).getLat());
+					if (distance > distance_min){
+						PCC = new Pcc(graphe,depart,arrivee,0 ); 
+						PCC.run(false);
+						
 					
-									
-					PCC = new Pcc(graphe,10000,72597,0 ); 
-					PCC.run(false);
-					PCCstar = new PccStar(graphe,10000,72597,0) ;
-					PCCstar.run(true);
-					System.out.println("|------------------------------------------------------------------------------------------------------|");
-					System.out.println("| type     | dist en mÃ¨tres | temps en minutes  | temps d'exec en ms   | Nombres de noeuds dans le tas |");
-					System.out.println("|          |                |                   |                      |                               |");
-					System.out.println("| PCC      |    "+PCC.getchemin().get_Longueur()+"     |"+ PCC.getchemin().get_Temps() + " |           "+ PCC.gettemps_exec() +"        |           "+ PCC.getmax_noeuds_tas() + "                 |");
-					System.out.println("|          |                |                   |                      |                               |");
-					System.out.println("| PCCstar  |    "+PCCstar.getchemin().get_Longueur()+"     |"+ PCCstar.getchemin().get_Temps() + "  |            "+ PCCstar.gettemps_exec() +"       |            "+ PCCstar.getmax_noeuds_tas() + "               |");
-					System.out.println("|          |                |                   |                      |                               |");
-					System.out.println("|------------------------------------------------------------------------------------------------------|");
+						if (PCC.getchemin().get_Longueur() != 0 ) {
+							PCCstar = new PccStar(graphe,depart,arrivee,0) ;
+							PCCstar.run(true);
+							PC2 = new Pcc(graphe,depart,arrivee,1 ); 
+							PC2.run(false);
+							PC2star = new PccStar(graphe,depart,arrivee,1) ;
+							PC2star.run(true);
+							System.out.println("|              Calcul d'itineraire entre "+ depart +" et " + arrivee +"!                                            |");
+							System.out.println("|------------------------------------------------------------------------------------------------------|");
+							System.out.println("| type     | dist en metres | temps en minutes  | temps d'exec en ms   | Nombres de noeuds dans le tas |");
+							System.out.println("|          |                |                   |                      |                               |");
+							System.out.println("| PCC      |-------------------------------------------------------------------------------------------|");
+							System.out.println("| Temps    |    "+PC2.getchemin().get_Longueur()+"     |"+ PC2.getchemin().get_Temps() + " |           "+ PC2.gettemps_exec() +"        |           "+ PC2.getmax_noeuds_tas() + "                 |");
+							System.out.println("| Distance |    "+PCC.getchemin().get_Longueur()+"     |"+ PCC.getchemin().get_Temps() + " |           "+ PCC.gettemps_exec() +"        |           "+ PCC.getmax_noeuds_tas() + "                 |");
+							System.out.println("|          |                |                   |                      |                               |");
+							System.out.println("| PCCstar  |-------------------------------------------------------------------------------------------|");
+							System.out.println("| Temps    |   "+PC2star.getchemin().get_Longueur()+"     |"+ PC2star.getchemin().get_Temps() + "  |            "+ PC2star.gettemps_exec() +"       |            "+ PC2star.getmax_noeuds_tas() + "               |");
+							System.out.println("| Distance |   "+PCCstar.getchemin().get_Longueur()+"     |"+ PCCstar.getchemin().get_Temps() + "  |            "+ PCCstar.gettemps_exec() +"       |            "+ PCCstar.getmax_noeuds_tas() + "               |");
+							System.out.println("|          |                |                   |                      |                               |");
+							System.out.println("|------------------------------------------------------------------------------------------------------|");
+							System.out.println("");
+							tab_times_pcc[i] = PCC.gettemps_exec();
+							tab_times_pcc[NB_tests+i] = PC2.gettemps_exec();
+							tab_times_star[i] = PCCstar.gettemps_exec();
+							tab_times_star[NB_tests+i] = PC2star.gettemps_exec();
+						}else { i--; }
+
+						
+					}
+					/* on ne garde pas les valeurs en cas de chemin non existant*/
+					else { i--; }
+					
+					System.setOut(stdout); 
+					System.out.println("test " + i + " terminé ");
+					System.setOut(new PrintStream(f));
 				
-				}	
+				}
 				
+				
+				/* calcul de la moyenne des temps d'éxecution pour PCC et PCC* */
+				long somme = 0;
+				long somme2 = 0; 
+				for(int i=0; i < tab_times_pcc.length ; i++){
+					somme = somme + tab_times_pcc[i];
+					somme2 = somme2 + tab_times_star[i];
+				}
+				 
+				//calculer la moyenne
+				long moyenne = somme / tab_times_pcc.length;
+				long moyenne2 = somme2 / tab_times_pcc.length;
+				System.out.println("Temps moyen d'éxecution pour le PCC : " + moyenne +" ms");			
+				
+				System.out.println("Temps moyen d'éxecution pour le PCC * : " + moyenne2+ " ms");
 				System.setOut(stdout);          
 			
 			
 			break; 
-				*/
+				
 	
 			default:
 			    System.out.println ("Choix de menu incorrect : " + choix) ;
