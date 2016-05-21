@@ -163,8 +163,8 @@ public class Pcc extends Algo {
     	//this.tas.printSorted();
     	
     	//Penser à sortir le noeud de départ du tas TODO
-    	
-    	while((!this.tas.isEmpty()) && (lab_courant.getCourant() != this.destination)){ // ajouter la condition si on a trouvé, on arrete de chercher TODO
+    	boolean stop = false;
+    	while((!this.tas.isEmpty()) && (lab_courant.getCourant() != this.destination) && !stop){ // ajouter la condition si on a trouvé, on arrete de chercher TODO
     		lab_courant = this.tas.findMin();
     		//if(lab_courant.getCourant() == this.destination)
     			//System.out.println("La destination est atteinte !");
@@ -211,6 +211,7 @@ public class Pcc extends Algo {
 	    						if(lab_suiv.getCourant() == this.destination){
 	    							lab_suiv.updateEstimation(0);
 	    							cout_suiv = 0;
+	    							stop = true;
 	    						}else{
 	    							lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
 	    							cout_suiv = cout_cour + a.getTemps();
@@ -223,6 +224,7 @@ public class Pcc extends Algo {
 	    						if(lab_suiv.getCourant() == this.destination){
 	    							lab_suiv.updateEstimation(0);
 	    							cout_suiv = 0;
+	    							stop = true;
 	    						}else{
 	    							lab_suiv.updateEstimation(Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
 	    						}
