@@ -24,6 +24,11 @@ public class Chemin {
 			
 			
 		}
+		
+		
+		public ArrayList<Arete> getAreteList(){
+			return this.List_Arete;
+		}
 		/**
 		 * Calcule la @return longueur en distance du chemin
 		 */

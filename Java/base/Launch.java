@@ -239,7 +239,8 @@ public class Launch {
 			
 			
 			break; 
-				
+			
+			case 8 : algo = new Covoit(graphe, this.fichierSortie (), this.readarg) ; break ;
 	
 			default :
 			    System.out.println ("Choix de menu incorrect : " + choix) ;
@@ -256,6 +257,9 @@ public class Launch {
 				}else if(Pcc.class.isInstance(algo)){
 					System.out.println("C'est un Pcc");
 					algo.run(false) ;
+				}else if(Covoit.class.isInstance(algo)){
+					System.out.println("C'est un Covoit");
+					algo.run(true);
 				}
 			}
 	    }
