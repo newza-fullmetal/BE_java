@@ -70,7 +70,7 @@ public class Arete {
 	
 	
 	public String toString() {
-		return "Arr�te partant du noeud " + this.getDepart().getId() + " jusqu'�" + this.getArrivee().getId();
+		return "Arete partant du noeud " + this.getDepart().getId() + " jusqu'a" + this.getArrivee().getId();
 	}
 	
 	public Noeud getDepart(){return this.depart;}
@@ -83,7 +83,7 @@ public class Arete {
 	
 	public float getVitesse() { return this.desc.vitesseMax();};
 	
-	public double getTemps() {return 1.0/(this.desc.vitesseMax()  * 1000.0 / 60.0 ) * this.Longueur ; }
+	public double getTemps() {return this.Longueur/(this.desc.vitesseMax()  * 1000.0 / 60.0 ) ; }
 	
 	public int getNbseg() { return this.nbseg; }
 	

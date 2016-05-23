@@ -81,6 +81,7 @@ public class Pcc extends Algo {
      */
     public int dijkstra(String type, Boolean star){
     	
+    	
     	this.graphe.getDessin().setColor(Color.BLUE);
     	//Chemin(int version, int magicnumber, int ID_map, int NB_noeud )
     	this.itineraire = new Chemin(1, 1, 1, 0);
@@ -131,7 +132,11 @@ public class Pcc extends Algo {
 			if  (a != null) {
 				switch(type){
 				case "Temps" : 		
-					lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
+					lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat())) /(130 * 1000/60));
+					//System.out.println("Distance 1 : " + Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
+					//System.out.println("Distance estimée : "+lab_suiv.getEstimation());
+					System.out.println("Le cout_cour : " + lab_suiv.getEstimation() +" Le cout de a : " + a.getTemps());
+
 					cout_suiv = a.getTemps();
 					break;
 				case "Distance" :
@@ -213,7 +218,8 @@ public class Pcc extends Algo {
 	    							cout_suiv = 0;
 	    							stop = true;
 	    						}else{
-	    							lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()))/130000);
+	    							lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat())) /(130 * 1000 / 60));
+	    							System.out.println("Le cout_cour : " + cout_cour +" Le cout de a : " + a.getTemps());
 	    							cout_suiv = cout_cour + a.getTemps();
 	    						}
 	    		    			break;
@@ -357,9 +363,8 @@ public class Pcc extends Algo {
 	}
 		long exec_time = 0;
 		int max = 0;
+		
 		if (disttemps == 0){
-			
-
 			if (TEST== false) {
 				exec_time = System.currentTimeMillis();
 				max = dijkstra("Distance", star);
