@@ -135,7 +135,7 @@ public class Pcc extends Algo {
 					lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat())) /(130 * 1000/60));
 					//System.out.println("Distance 1 : " + Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat()));
 					//System.out.println("Distance estimée : "+lab_suiv.getEstimation());
-					System.out.println("Le cout_cour : " + lab_suiv.getEstimation() +" Le cout de a : " + a.getTemps());
+					//System.out.println("Le cout_cour : " + lab_suiv.getEstimation() +" Le cout de a : " + a.getTemps());
 
 					cout_suiv = a.getTemps();
 					break;
@@ -219,7 +219,7 @@ public class Pcc extends Algo {
 	    							stop = true;
 	    						}else{
 	    							lab_suiv.updateEstimation((Graphe.distance(suiv.getLon(), suiv.getLat(), dest.getLon(), dest.getLat())) /(130 * 1000 / 60));
-	    							System.out.println("Le cout_cour : " + cout_cour +" Le cout de a : " + a.getTemps());
+	    							//System.out.println("Le cout_cour : " + cout_cour +" Le cout de a : " + a.getTemps());
 	    							cout_suiv = cout_cour + a.getTemps();
 	    						}
 	    		    			break;
@@ -348,7 +348,7 @@ public class Pcc extends Algo {
 			}
 			
 	    }
-		entree.close();
+		
 	}
 	else {
 		TEST = true;
