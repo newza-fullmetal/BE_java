@@ -37,6 +37,7 @@ public class Launch {
 	System.out.println ("5 - Charger un fichier de chemin (.path) et le verifier.") ;
 	System.out.println ("6 - lancer procedure de test") ;
 	System.out.println ("7 - Comparaison avec le groupe E") ;
+	System.out.println ("8 - Faire un peu de covoit' (c'est bon pour la planete !)") ;
 	System.out.println () ;
     }
 
