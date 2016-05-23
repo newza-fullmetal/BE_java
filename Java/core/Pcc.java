@@ -287,26 +287,29 @@ public class Pcc extends Algo {
     	 */
     	//System.out.println("Fin du parcours");
     	//On remplit le chemin
-    	lab_courant = this.carte.get(dest);
-		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
-		
-
-    	do{
-    		itineraire.add_arete(lab_courant.getArete());
-    		lab_courant = this.carte.get(noeuds.get(lab_courant.getPere()));
-    		//System.out.println("coucou "+lab_courant.getCourant());
-    		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
-    		
-    		
-    	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
-    	this.graphe.getDessin().setColor(Color.GREEN);
-    	graphe.dessiner_chemin(itineraire);
-    	//On sort quand on est revenu au départ ou s'il y a une erreur...
-    	//Affichage du chemin...
-    	//System.out.println(itineraire.toString());
-    	//Affichage du cout...
-    	//System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
-    	//System.out.println("Vraie !!!!!!!!!!!!!!!!!!!!!!!!!!! Fin du parcours");
+    	
+    	if (stop == true) {
+	    	lab_courant = this.carte.get(dest);
+			itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
+			
+	
+	    	do{
+	    		itineraire.add_arete(lab_courant.getArete());
+	    		lab_courant = this.carte.get(noeuds.get(lab_courant.getPere()));
+	    		//System.out.println("coucou "+lab_courant.getCourant());
+	    		itineraire.add_noeud(noeuds.get(lab_courant.getCourant()));
+	    		
+	    		
+	    	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
+	    	this.graphe.getDessin().setColor(Color.GREEN);
+	    	graphe.dessiner_chemin(itineraire);
+	    	//On sort quand on est revenu au départ ou s'il y a une erreur...
+	    	//Affichage du chemin...
+	    	//System.out.println(itineraire.toString());
+	    	//Affichage du cout...
+	    	//System.out.println("Cout du chemin : \n en Distance -> " + itineraire.get_Longueur() + "  mètres \n en Temps ->" + itineraire.get_Temps() + "  minutes");
+	    	//System.out.println("Vraie !!!!!!!!!!!!!!!!!!!!!!!!!!! Fin du parcours");
+    	} 
     	return max_noeuds_in_tas;
     }
     
@@ -321,7 +324,7 @@ public class Pcc extends Algo {
     */
     public void run(Boolean star) {
 
-    int disttemps = 0;
+
     boolean go = false;
     boolean TEST = false;
    
@@ -345,7 +348,7 @@ public class Pcc extends Algo {
 			}
 			
 	    }
-		//entree.close();
+		entree.close();
 	}
 	else {
 		TEST = true;
