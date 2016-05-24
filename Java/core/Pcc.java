@@ -82,7 +82,7 @@ public class Pcc extends Algo {
     public int dijkstra(String type, Boolean star){
     	
     	
-    	this.graphe.getDessin().setColor(Color.BLUE);
+    	//this.graphe.getDessin().setColor(Color.BLUE);
     	//Chemin(int version, int magicnumber, int ID_map, int NB_noeud )
     	this.itineraire = new Chemin(1, 1, 1, 0);
     	int max_noeuds_in_tas = 0;
@@ -275,8 +275,9 @@ public class Pcc extends Algo {
     		if(max_noeuds_in_tas < size){
     			max_noeuds_in_tas = size;
     		}
-    		this.graphe.getDessin().setColor(Color.MAGENTA);
-    		//On sort le min du tas
+
+			this.graphe.getDessin().setColor(Color.BLUE);
+
     		this.graphe.getDessin().drawPoint(noeuds.get(lab_courant.getCourant()).getLon(), noeuds.get(lab_courant.getCourant()).getLat(), 2);
 			
     		//this.tas.deleteMin();
@@ -301,7 +302,12 @@ public class Pcc extends Algo {
 	    		
 	    		
 	    	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
-	    	this.graphe.getDessin().setColor(Color.BLUE);
+	    	if(type == "Distance"){
+    			this.graphe.getDessin().setColor(Color.MAGENTA);
+    		}else{
+    			this.graphe.getDessin().setColor(Color.RED);
+    		}
+	    	
 	    	graphe.dessiner_chemin(itineraire);
 	    	//On sort quand on est revenu au départ ou s'il y a une erreur...
 	    	//Affichage du chemin...

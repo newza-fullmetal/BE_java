@@ -472,14 +472,14 @@ public class Graphe {
     //dessine une arrete de mani�re pr�cise, en ajoutant les segments 
     public void dessiner_arete(Arete a) {
     	dessin.drawLine(a.getDepart().getLon(),a.getDepart().getLat(),a.getArrivee().getLon(),a.getArrivee().getLat()) ;
-		dessin.drawPoint(a.getDepart().getLon(), a.getDepart().getLat(), 6);
-		dessin.drawPoint(a.getArrivee().getLon(), a.getArrivee().getLat(), 6);
+		dessin.drawPoint(a.getDepart().getLon(), a.getDepart().getLat(), 4);
+		dessin.drawPoint(a.getArrivee().getLon(), a.getArrivee().getLat(), 4);
 
     }
     public void dessiner_chemin(Chemin ch){
     	
     	
-    	dessin.setColor(java.awt.Color.BLUE) ;
+    	
 	   
     	for(Arete a : ch.List_Arete){
     		if (a!=null) {
