@@ -301,7 +301,7 @@ public class Pcc extends Algo {
 	    		
 	    		
 	    	}while(lab_courant.getCourant() != this.origine || !(lab_courant.is_fixed()));
-	    	this.graphe.getDessin().setColor(Color.GREEN);
+	    	this.graphe.getDessin().setColor(Color.BLUE);
 	    	graphe.dessiner_chemin(itineraire);
 	    	//On sort quand on est revenu au départ ou s'il y a une erreur...
 	    	//Affichage du chemin...

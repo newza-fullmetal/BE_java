@@ -87,7 +87,7 @@ public class Covoit extends Algo{
 					compteur_pied++;
 					a_pied = this.trajet_conduct.getAreteList().get(compteur_pied);
 					n_pied = a_pied.getDepart().getId();
-					d_restante_pied = avance + a_pied.getLongueur();
+					d_restante_pied = a_pied.getLongueur() + avance;
 					System.out.println("On change d'arete pour le pieton");
 					
 				}
