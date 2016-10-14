@@ -19,7 +19,7 @@ public class Couleur {
 	switch (type) {
 	case 'a':
 	    d.setWidth(2) ;
-	    d.setColor(Color.red) ;
+	    d.setColor(Color.BLACK) ;
 	    break ;
 
 	case 'b':

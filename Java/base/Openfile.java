@@ -26,6 +26,9 @@ public class Openfile {
 
         // On cherche aussi dans le sous-repertoire local "Maps" (s'il existe)
 	"Maps", 
+	
+	// On cherche aussi dans le sous-repertoire local "PATH" (s'il existe)
+	"PATH",
 
 	// et dans le repertoire courant (Unix uniquement)
 	".",
